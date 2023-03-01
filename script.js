@@ -1,3 +1,8 @@
+var canvas = document.getElementById("work_space");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+ctx = canvas.getContext("2d");
+
 // var myGridObject = {
 //   canvasWidth: 400, //ширина холста
 //   canvasHeight: 400, //высота холста
