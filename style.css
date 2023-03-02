@@ -1,7 +1,3 @@
-/* html {
-  overflow: hidden;
-} */
-
 body,
 html {
   margin: 0;
@@ -17,13 +13,15 @@ html {
   height: 50px;
   background-color: darkolivegreen;
 }
-/* 
+
 #container {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 50px);
+}
+
+#work_space {
   width: 100%;
   height: 100%;
-} */
-
-canvas {
-  display: block;
   border: 5px solid red;
 }
