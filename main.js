@@ -10,39 +10,51 @@ function resize() {
   canvas.setHeight(document.getElementById("container").offsetHeight);
 }
 
-$(document).ready(function () {
-  var c = new fabric.Canvas(canvas, {
-      selection: false,
-      height: window.innerHeight,
-      width: window.innerWidth,
-    }),
-    options = {
-      distance: 10,
-      width: c.width,
-      height: c.height,
-      param: {
-        stroke: "#ebebeb",
-        strokeWidth: 1,
-        selectable: false,
-      },
-    },
-    gridLen = options.width / options.distance;
+let circle = new fabric.Circle({
+  radius: 20,
+  fill: "green",
+  left: 100,
+  top: 100,
+});
+let triandle = new fabric.Triangle({
+  width: 20,
+  height: 30,
+  fill: "blue",
+  left: 500,
+  top: 500,
+});
+let rect = new fabric.Rect({
+  left: 1000,
+  top: 100,
+  fill: "red",
+  width: 200,
+  height: 100,
+});
+canvas.add(circle, triandle, rect);
 
-  for (var i = 0; i < gridLen; i++) {
-    var distance = i * options.distance,
-      horizontal = new fabric.Line(
-        [distance, 0, distance, options.width],
-        options.param
-      ),
-      vertical = new fabric.Line(
-        [0, distance, options.width, distance],
-        options.param
-      );
-    c.add(horizontal);
-    c.add(vertical);
-    if (i % 5 === 0) {
-      horizontal.set({ stroke: "#cccccc" });
-      vertical.set({ stroke: "#cccccc" });
-    }
+canvas.on("mouse:wheel", function (opt) {
+  let delta = opt.e.deltaY;
+  let zoom = canvas.getZoom();
+  zoom *= 0.999 ** delta;
+  if (zoom > 20) zoom = 20;
+  if (zoom < 0.01) zoom = 0.01;
+  canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+  opt.e.preventDefault();
+  opt.e.stopPropagation();
+});
+
+canvas.on("mouse:up", function (opt) {
+  this.setViewportTransform(this.viewportTransform);
+  this.isDragging = false;
+  this.selection = true;
+});
+
+canvas.on("mouse:down", function (opt) {
+  let evt = opt.e;
+  if (evt.altKey === true) {
+    this.isDragging = true;
+    this.selection = false;
+    this.lastPosX = evt.clientX;
+    this.lastPosY = evt.clientY;
   }
 });
