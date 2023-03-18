@@ -3,12 +3,10 @@ let canvas = new fabric.Canvas("work_space", {
   height: document.getElementById("container").offsetHeight,
 });
 
-window.addEventListener("resize", resize);
-
-function resize() {
+window.addEventListener("resize", function () {
   canvas.setWidth(document.getElementById("container").offsetWidth);
   canvas.setHeight(document.getElementById("container").offsetHeight);
-}
+});
 
 let circle = new fabric.Circle({
   radius: 20,
@@ -33,28 +31,24 @@ let rect = new fabric.Rect({
 canvas.add(circle, triandle, rect);
 
 canvas.on("mouse:wheel", function (opt) {
+  console.log(opt.e.deltaY);
   let delta = opt.e.deltaY;
   let zoom = canvas.getZoom();
+  console.log("ZOOM = " + zoom);
   zoom *= 0.999 ** delta;
+  let gridZoom = parseInt(
+    document.getElementById("container").style.backgroundSize.split(" ")[0]
+  );
+  gridZoom *= 0.999 ** delta;
+  console.log("GRID_ZOOM = " + gridZoom);
+  console.log("ZOOM = " + zoom);
   if (zoom > 20) zoom = 20;
   if (zoom < 0.01) zoom = 0.01;
   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+  document.getElementById("container").style.backgroundSize = toString(
+    gridZoom + "px" + " " + gridZoom + "px"
+  );
+  console.log(document.getElementById("container").style.backgroundSize);
   opt.e.preventDefault();
   opt.e.stopPropagation();
-});
-
-canvas.on("mouse:up", function (opt) {
-  this.setViewportTransform(this.viewportTransform);
-  this.isDragging = false;
-  this.selection = true;
-});
-
-canvas.on("mouse:down", function (opt) {
-  let evt = opt.e;
-  if (evt.altKey === true) {
-    this.isDragging = true;
-    this.selection = false;
-    this.lastPosX = evt.clientX;
-    this.lastPosY = evt.clientY;
-  }
 });
