@@ -1,11 +1,12 @@
 let canvas = new fabric.Canvas("work_space", {
-  width: document.getElementById("container").offsetWidth,
-  height: document.getElementById("container").offsetHeight,
+  width: document.getElementById("container").clientWidth,
+  height: document.getElementById("container").clientHeight,
+  selection: false,
 });
 
 window.addEventListener("resize", function () {
-  canvas.setWidth(document.getElementById("container").offsetWidth);
-  canvas.setHeight(document.getElementById("container").offsetHeight);
+  canvas.setWidth(document.getElementById("container").clientWidth);
+  canvas.setHeight(document.getElementById("container").clientHeight);
 });
 
 // let circle = new fabric.Circle({

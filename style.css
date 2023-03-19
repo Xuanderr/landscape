@@ -23,7 +23,7 @@ html {
       rgba(230, 210, 189, 0) 1px
     ),
     linear-gradient(90deg, rgb(235, 190, 145), rgba(230, 210, 189, 0) 1px);
-  background-position: center center;
+  background-position: left center;
   background-color: rgb(221, 225, 228);
 }
 
