@@ -8,47 +8,68 @@ window.addEventListener("resize", function () {
   canvas.setHeight(document.getElementById("container").offsetHeight);
 });
 
-let circle = new fabric.Circle({
-  radius: 20,
+// let circle = new fabric.Circle({
+//   radius: 20,
+//   fill: "green",
+//   left: 100,
+//   top: 100,
+// });
+// let triandle = new fabric.Triangle({
+//   width: 20,
+//   height: 30,
+//   fill: "blue",
+//   left: 500,
+//   top: 500,
+// });
+// let rect = new fabric.Rect({
+//   left: 1000,
+//   top: 100,
+//   fill: "red",
+//   width: 200,
+//   height: 100,
+// });
+// canvas.add(circle, triandle, rect);
+
+let circle1 = new fabric.Circle({
+  radius: 50,
+  fill: "red",
+  left: 0,
+});
+let circle2 = new fabric.Circle({
+  radius: 50,
   fill: "green",
   left: 100,
-  top: 100,
 });
-let triandle = new fabric.Triangle({
-  width: 20,
-  height: 30,
+let circle3 = new fabric.Circle({
+  radius: 50,
   fill: "blue",
-  left: 500,
-  top: 500,
+  left: 200,
 });
-let rect = new fabric.Rect({
-  left: 1000,
+let group = new fabric.Group([circle1, circle2, circle3], {
+  left: 200,
   top: 100,
-  fill: "red",
-  width: 200,
-  height: 100,
 });
-canvas.add(circle, triandle, rect);
+canvas.add(group);
 
 canvas.on("mouse:wheel", function (opt) {
-  console.log(opt.e.deltaY);
   let delta = opt.e.deltaY;
   let zoom = canvas.getZoom();
-  console.log("ZOOM = " + zoom);
   zoom *= 0.999 ** delta;
-  let gridZoom = parseInt(
-    document.getElementById("container").style.backgroundSize.split(" ")[0]
-  );
-  gridZoom *= 0.999 ** delta;
-  console.log("GRID_ZOOM = " + gridZoom);
-  console.log("ZOOM = " + zoom);
+  gridZooming(delta);
   if (zoom > 20) zoom = 20;
   if (zoom < 0.01) zoom = 0.01;
   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-  document.getElementById("container").style.backgroundSize = toString(
-    gridZoom + "px" + " " + gridZoom + "px"
-  );
-  console.log(document.getElementById("container").style.backgroundSize);
   opt.e.preventDefault();
   opt.e.stopPropagation();
 });
+
+function gridZooming(delta) {
+  let grid = document.getElementById("container");
+  let gridZoom = parseInt(grid.style.backgroundSize.split(" ")[0]);
+  if (delta < 0) {
+    gridZoom += 1;
+  } else {
+    gridZoom -= 1;
+  }
+  grid.style.backgroundSize = `${gridZoom}px ${gridZoom}px`;
+}
