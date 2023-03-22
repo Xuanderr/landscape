@@ -1,35 +1,21 @@
-let canvas = new fabric.Canvas("work_space", {
+const canvas = new fabric.Canvas("work_space", {
   width: document.getElementById("container").clientWidth,
   height: document.getElementById("container").clientHeight,
-  selection: false,
 });
+const bgUrl = "ooorganize.svg";
+canvas.setBackgroundColor(
+  {
+    source: bgUrl,
+    //repeat: "repeat",
+    // crossOrigin: null
+  },
+  canvas.renderAll.bind(canvas)
+);
 
 window.addEventListener("resize", function () {
   canvas.setWidth(document.getElementById("container").clientWidth);
   canvas.setHeight(document.getElementById("container").clientHeight);
 });
-
-// let circle = new fabric.Circle({
-//   radius: 20,
-//   fill: "green",
-//   left: 100,
-//   top: 100,
-// });
-// let triandle = new fabric.Triangle({
-//   width: 20,
-//   height: 30,
-//   fill: "blue",
-//   left: 500,
-//   top: 500,
-// });
-// let rect = new fabric.Rect({
-//   left: 1000,
-//   top: 100,
-//   fill: "red",
-//   width: 200,
-//   height: 100,
-// });
-// canvas.add(circle, triandle, rect);
 
 let circle1 = new fabric.Circle({
   radius: 50,
@@ -56,7 +42,6 @@ canvas.on("mouse:wheel", function (opt) {
   let delta = opt.e.deltaY;
   let zoom = canvas.getZoom();
   zoom *= 0.999 ** delta;
-  gridZooming(delta);
   if (zoom > 20) zoom = 20;
   if (zoom < 0.01) zoom = 0.01;
   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
@@ -64,13 +49,32 @@ canvas.on("mouse:wheel", function (opt) {
   opt.e.stopPropagation();
 });
 
-function gridZooming(delta) {
-  let grid = document.getElementById("container");
-  let gridZoom = parseInt(grid.style.backgroundSize.split(" ")[0]);
-  if (delta < 0) {
-    gridZoom += 1;
-  } else {
-    gridZoom -= 1;
-  }
-  grid.style.backgroundSize = `${gridZoom}px ${gridZoom}px`;
-}
+// function gridSizeZooming(delta, element) {
+//   let gridZoom = parseInt(element.style.backgroundSize.split(" ")[0]);
+//   if (delta < 0) {
+//     gridZoom += 1;
+//   } else {
+//     gridZoom -= 1;
+//   }
+//   element.style.backgroundSize = `${gridZoom}px ${gridZoom}px`;
+// }
+
+// function gridPositionZooming(delta, previousCoords, afterCoords, element) {
+//   let gridLeftPosition = parseInt(
+//     element.style.backgroundPosition.split(" ")[0]
+//   );
+//   let gridTopPosition = parseInt(
+//     element.style.backgroundPosition.split(" ")[1]
+//   );
+//   console.log(gridLeftPosition, gridTopPosition);
+//   if (delta < 0) {
+//     gridLeftPosition -= Math.abs(previousCoords.x - afterCoords.x);
+//     gridTopPosition -= Math.abs(previousCoords.y - afterCoords.y);
+//     console.log(gridLeftPosition, gridTopPosition);
+//   } else {
+//     gridLeftPosition += Math.abs(previousCoords.x - afterCoords.x);
+//     gridTopPosition += Math.abs(previousCoords.y - afterCoords.y);
+//     console.log(gridLeftPosition, gridTopPosition);
+//   }
+//   element.style.backgroundPosition = `${gridLeftPosition}px ${gridTopPosition}px`;
+// }
