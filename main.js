@@ -2,7 +2,7 @@ const canvas = new fabric.Canvas("work_space", {
   width: document.getElementById("container").clientWidth,
   height: document.getElementById("container").clientHeight,
 });
-const bgUrl = "ooorganize.svg";
+const bgUrl = "./img/grid.svg";
 canvas.setBackgroundColor(
   {
     source: bgUrl,
@@ -88,33 +88,3 @@ function stopDrawingLine(opt) {
 //   top: 100,
 // });
 // canvas.add(group);
-
-// function gridSizeZooming(delta, element) {
-//   let gridZoom = parseInt(element.style.backgroundSize.split(" ")[0]);
-//   if (delta < 0) {
-//     gridZoom += 1;
-//   } else {
-//     gridZoom -= 1;
-//   }
-//   element.style.backgroundSize = `${gridZoom}px ${gridZoom}px`;
-// }
-
-// function gridPositionZooming(delta, previousCoords, afterCoords, element) {
-//   let gridLeftPosition = parseInt(
-//     element.style.backgroundPosition.split(" ")[0]
-//   );
-//   let gridTopPosition = parseInt(
-//     element.style.backgroundPosition.split(" ")[1]
-//   );
-//   console.log(gridLeftPosition, gridTopPosition);
-//   if (delta < 0) {
-//     gridLeftPosition -= Math.abs(previousCoords.x - afterCoords.x);
-//     gridTopPosition -= Math.abs(previousCoords.y - afterCoords.y);
-//     console.log(gridLeftPosition, gridTopPosition);
-//   } else {
-//     gridLeftPosition += Math.abs(previousCoords.x - afterCoords.x);
-//     gridTopPosition += Math.abs(previousCoords.y - afterCoords.y);
-//     console.log(gridLeftPosition, gridTopPosition);
-//   }
-//   element.style.backgroundPosition = `${gridLeftPosition}px ${gridTopPosition}px`;
-// }
