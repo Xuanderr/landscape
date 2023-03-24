@@ -1,20 +1,32 @@
-const canvas = new fabric.Canvas("work_space", {
-  width: document.getElementById("container").clientWidth,
-  height: document.getElementById("container").clientHeight,
-});
-const bgUrl = "./img/grid.svg";
-canvas.setBackgroundColor(
-  {
-    source: bgUrl,
-    //repeat: "repeat",
-    // crossOrigin: null
-  },
-  canvas.renderAll.bind(canvas)
-);
+const initCanvas = (workSpace, container) => {
+  return new fabric.Canvas(workSpace, {
+    width: document.getElementById(container).clientWidth,
+    height: document.getElementById(container).clientHeight,
+  });
+};
 
-window.addEventListener("resize", function () {
-  canvas.setWidth(document.getElementById("container").clientWidth);
-  canvas.setHeight(document.getElementById("container").clientHeight);
+const setBackground = (url, canvas) => {
+  canvas.setBackgroundColor(
+    {
+      source: url,
+      /*repeat: "repeat", crossOrigin: null*/
+    },
+    canvas.renderAll.bind(canvas)
+  );
+};
+
+const constants = {
+  workSpace: "work_space",
+  container: "container",
+  backgroundUrl: "./img/grid.svg",
+};
+
+const canvas = initCanvas(constants.workSpace, constants.container);
+setBackground(constants.backgroundUrl, canvas);
+
+window.addEventListener("resize", () => {
+  canvas.setWidth(document.getElementById(constants.container).clientWidth);
+  canvas.setHeight(document.getElementById(constants.container).clientHeight);
 });
 
 canvas.on("mouse:wheel", function (opt) {
@@ -42,7 +54,6 @@ function addLines() {
 let line;
 function startAddLine(opt) {
   mouseDown = true;
-  let pointer = canvas.getPointer(opt.pointer);
   line = new fabric.Line(
     [opt.pointer.x, opt.pointer.y, opt.pointer.x, opt.pointer.y],
     {
@@ -60,12 +71,13 @@ function startDrawLine(opt) {
       x2: opt.pointer.x,
       y2: opt.pointer.y,
     });
-    canvas.requestRenderAll();
   }
+  canvas.requestRenderAll();
 }
 
 function stopDrawingLine(opt) {
   mouseDown = false;
+  console.log(line);
 }
 
 // let circle1 = new fabric.Circle({
