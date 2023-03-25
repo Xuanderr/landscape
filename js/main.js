@@ -1,7 +1,8 @@
 const initCanvas = (workSpace, container) => {
   return new fabric.Canvas(workSpace, {
-    width: document.getElementById(container).offsetWidth,
-    height: document.getElementById(container).offsetHeight,
+    //document.getElementById(container).offsetWidth
+    width: window.innerWidth,
+    height: window.innerHeight,
     skipOffscreen: true,
   });
 };
@@ -11,6 +12,7 @@ const setBackground = (url, canvas) => {
     {
       source: url,
       /*repeat: "repeat", crossOrigin: null*/
+      crossOrigin: null,
     },
     canvas.renderAll.bind(canvas)
   );
@@ -19,7 +21,7 @@ const setBackground = (url, canvas) => {
 const constants = {
   workSpace: "work_space",
   container: "container",
-  backgroundUrl: "./img/grid.svg",
+  backgroundUrl: "img/grid.svg",
 };
 
 const projectOptions = {
@@ -46,10 +48,10 @@ const eventActions = {
     options.e.preventDefault();
     options.e.stopPropagation();
   },
-  windowResizeAction: () => {
-    canvas.setWidth(document.getElementById(constants.container).clientWidth);
-    canvas.setHeight(document.getElementById(constants.container).clientHeight);
-  },
+  // windowResizeAction: () => {
+  //   canvas.setWidth(document.getElementById(constants.container).clientWidth);
+  //   canvas.setHeight(document.getElementById(constants.container).clientHeight);
+  // },
   canvasStartDrawingPolygon: (options) => {
     polyObject.addPoint(options);
   },
@@ -64,7 +66,7 @@ const actionSetter = {
     window.addEventListener("resize", eventActions.windowResizeAction);
   },
   setPolygonDraw: () => {
-    canvas.on("mouse:down", eventActions.canvasStartDrawingPolygon);
+    canvas.on("mouse:up", eventActions.canvasStartDrawingPolygon);
   },
 };
 
@@ -76,32 +78,21 @@ const polyObject = {
       fill: "#ffffff",
       stroke: "#333333",
       strokeWidth: 0.5,
-      //canvas.getPointer(options.e, false).y
-      left: options.e.layerX,
-      top: options.e.layerY,
+      left: canvas.getPointer(options.e, false).x,
+      top: canvas.getPointer(options.e, false).y,
       // selectable: false,
       // hasBorders: false,
       // hasControls: false,
-      // originX: "center",
-      // originY: "center",
+      originX: "center",
+      originY: "center",
     });
-    if (projectOptions.polygonOptions.pointArray.length === 0) {
-      circle.set({
-        fill: "red",
-      });
-    }
-    projectOptions.polygonOptions.pointArray.push(circle);
     canvas.add(circle);
-    console.log(canvas.getZoom() / projectOptions.prevZoom);
-    console.log(circle);
-    console.log(options.pointer);
-    canvas.selection = false;
   },
 };
 
 const canvas = initCanvas(constants.workSpace, constants.container);
 setBackground(constants.backgroundUrl, canvas);
-actionSetter.setWindowResize();
+//actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
 
 const btn = document.getElementById("addBtn");
