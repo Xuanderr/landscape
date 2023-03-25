@@ -1,7 +1,7 @@
 const initCanvas = (workSpace, container) => {
   return new fabric.Canvas(workSpace, {
-    width: document.getElementById(container).clientWidth,
-    height: document.getElementById(container).clientHeight,
+    width: document.getElementById(container).offsetWidth,
+    height: document.getElementById(container).offsetHeight,
     skipOffscreen: true,
   });
 };
@@ -41,8 +41,8 @@ const eventActions = {
     zoom *= 0.999 ** delta;
     if (zoom > 20) zoom = 20;
     if (zoom < 0.01) zoom = 0.01;
-    //canvas.setZoom(zoom);
-    canvas.zoomToPoint({ x: options.e.offsetX, y: options.e.offsetY }, zoom);
+    canvas.setZoom(zoom);
+    //canvas.zoomToPoint({ x: options.e.offsetX, y: options.e.offsetY }, zoom);
     options.e.preventDefault();
     options.e.stopPropagation();
   },
@@ -76,13 +76,14 @@ const polyObject = {
       fill: "#ffffff",
       stroke: "#333333",
       strokeWidth: 0.5,
-      left: options.pointer.x * (canvas.getZoom() / projectOptions.prevZoom),
-      top: options.pointer.y * (canvas.getZoom() / projectOptions.prevZoom),
-      selectable: false,
-      hasBorders: false,
-      hasControls: false,
-      originX: "center",
-      originY: "center",
+      //canvas.getPointer(options.e, false).y
+      left: options.e.layerX,
+      top: options.e.layerY,
+      // selectable: false,
+      // hasBorders: false,
+      // hasControls: false,
+      // originX: "center",
+      // originY: "center",
     });
     if (projectOptions.polygonOptions.pointArray.length === 0) {
       circle.set({
