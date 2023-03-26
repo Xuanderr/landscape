@@ -53,7 +53,12 @@ const eventActions = {
   canvasContinueDrawingPolygon: (options) => {
     polyObject.addLine(options);
   },
-  canvasStopDrawingPlygon: () => {},
+  canvasStopDrawingPolygon: () => {
+    polyObject.generatePolygon(
+      projectOptions.polygonOptions.pointArray,
+      projectOptions.polygonOptions.lineArray
+    );
+  },
 };
 const actionSetter = {
   setCanvasZoom: () => {
@@ -64,8 +69,8 @@ const actionSetter = {
   },
   setPolygonDraw: () => {
     canvas.on("mouse:down", eventActions.canvasStartDrawingPolygon);
-    // canvas.on("mouse:up", eventActions.canvasStartDrawingPolygon);
     canvas.on("mouse:move", eventActions.canvasContinueDrawingPolygon);
+    canvas.on("mouse:dblclick", eventActions.canvasStopDrawingPolygon);
   },
 };
 
@@ -89,9 +94,6 @@ const polyObject = {
     if (projectOptions.polygonOptions.pointArray.length === 0) {
       circle.set({ fill: "red" });
     }
-    // projectOptions.polygonOptions.pointArray.push(circle);
-    // canvas.add(circle);
-    //let linePoints = [ pointer.x, pointer.y, pointer.x, pointer.y, ];
     let line = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], {
       strokeWidth: 2,
       fill: "#999999",
@@ -149,10 +151,6 @@ const polyObject = {
     projectOptions.polygonOptions.lineArray.push(line);
     canvas.add(line);
     canvas.add(circle);
-    canvas.getObjects().forEach((element) => {
-      console.log(element);
-      console.log(element.class);
-    });
     canvas.selection = false;
   },
   addLine: (options) => {
@@ -177,6 +175,36 @@ const polyObject = {
       canvas.renderAll();
     }
     canvas.renderAll();
+  },
+  generatePolygon: (pointArray, lineArray) => {
+    let points = new Array();
+    pointArray.forEach((element) => {
+      points.push({
+        x: element.left,
+        y: element.top,
+      });
+      canvas.remove(element);
+    });
+    lineArray.forEach((element) => {
+      canvas.remove(element);
+    });
+    canvas
+      .remove(projectOptions.polygonOptions.activeShape)
+      .remove(projectOptions.polygonOptions.activeLine);
+    let polygon = new fabric.Polygon(points, {
+      stroke: "#333333",
+      strokeWidth: 0.5,
+      fill: "red",
+      opacity: 1,
+      hasBorders: false,
+      hasControls: false,
+    });
+    canvas.add(polygon);
+
+    projectOptions.polygonOptions.activeLine = null;
+    projectOptions.polygonOptions.activeShape = null;
+    console.log(polygon.borderDashArray);
+    canvas.selection = true;
   },
 };
 
