@@ -50,7 +50,7 @@ const eventActions = {
   canvasStartDrawingPolygon: (options) => {
     polyObject.addPoint(options);
   },
-  canvasContinueDrawingPolygin: (options) => {
+  canvasContinueDrawingPolygon: (options) => {
     polyObject.addLine(options);
   },
   canvasStopDrawingPlygon: () => {},
@@ -65,7 +65,7 @@ const actionSetter = {
   setPolygonDraw: () => {
     canvas.on("mouse:down", eventActions.canvasStartDrawingPolygon);
     // canvas.on("mouse:up", eventActions.canvasStartDrawingPolygon);
-    canvas.on("mouse:move", eventActions.canvasStartDrawingPolygon);
+    canvas.on("mouse:move", eventActions.canvasContinueDrawingPolygon);
   },
 };
 
