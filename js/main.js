@@ -74,6 +74,19 @@ const actionSetter = {
   },
 };
 
+let line = new fabric.Line([0, 20, 100, 20], {
+  strokeDashArray: [5, 5],
+  stroke: "blue",
+  strokeWidth: 20,
+  class: "line",
+  originX: "center",
+  originY: "center",
+  selectable: false,
+  hasBorders: false,
+  hasControls: false,
+  evented: false,
+});
+
 //POLYGON
 const polyObject = {
   addPoint: (options) => {
@@ -95,9 +108,9 @@ const polyObject = {
       circle.set({ fill: "red" });
     }
     let line = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], {
+      strokeDashArray: [5, 5],
+      stroke: "blue",
       strokeWidth: 2,
-      fill: "#999999",
-      stroke: "#999999",
       class: "line",
       originX: "center",
       originY: "center",
@@ -212,7 +225,7 @@ const canvas = initCanvas(constants.workSpace, constants.container);
 setBackground(constants.backgroundUrl, canvas);
 actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
-
+canvas.add(line);
 const btn = document.getElementById("addBtn");
 btn.addEventListener("click", () => {
   actionSetter.setPolygonDraw();
