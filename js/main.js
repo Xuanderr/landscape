@@ -104,6 +104,7 @@ const polyObject = {
       originX: "center",
       originY: "center",
     });
+
     if (projectOptions.polygonOptions.pointArray.length === 0) {
       circle.set({ fill: "red" });
     }
