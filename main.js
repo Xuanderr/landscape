@@ -58,6 +58,13 @@ setBackground(constants.backgroundUrl, canvas);
 actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
 
+// line.on("mouseover", () => {
+//   console.log("kek");
+//   line.set({
+//     fill: "red",
+//   });
+// });
+
 const btn = document.getElementById("addBtn");
 btn.addEventListener("click", () => {
   if (projectOptions.currentMode === "default") {

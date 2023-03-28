@@ -31,18 +31,16 @@ export class PolygonDrawer {
 
   static #polygonOptions = {
     stroke: "#333333",
-    strokeWidth: 1,
+    strokeWidth: 4,
     fill: "#cccccc",
     opacity: 0.1,
-    selectable: false,
-    hasBorders: false,
-    hasControls: false,
-    evented: false,
+    dirty: true,
+    objectCaching: false,
+    // selectable: false,
+    // hasBorders: false,
+    // hasControls: false,
+    // evented: false,
   };
-
-  // constructor(canvas) {
-  //   PolygonDrawer.#canvas = canvas;
-  // }
 
   static canvasSetter(canvas) {
     this.#canvas = canvas;
@@ -90,15 +88,25 @@ export class PolygonDrawer {
       let y = this.#pointsArray[0].y;
       lineFromStartPoint = new fabric.Line([x, y, x, y], this.#lineOptions);
     }
-    let polygon = new fabric.Polygon(this.#pointsArray, this.#polygonOptions);
+    let polygon;
+    if (this.#circleArray.length < 2) {
+      polygon = new fabric.Polyline(
+        [pointer.x, pointer.y],
+        this.#polygonOptions
+      );
+    } else {
+      polygon = new fabric.Polyline(this.#pointsArray, this.#polygonOptions);
+    }
+
     if (this.#activeShape) {
       this.#canvas.remove(this.#activeShape);
     }
     this.#activeShape = polygon;
     this.#activeLineFromEndPoint = lineFromEndPoint;
     this.#linesArray.push(lineFromEndPoint);
-    this.#canvas.add(circle, lineFromEndPoint, polygon);
-    console.log(this.#canvas.getObjects());
+    this.#canvas.add(circle, polygon);
+    //this.#canvas.add(circle, lineFromEndPoint, polygon);
+    //console.log(this.#canvas.getObjects());
     if (this.#pointsArray.length > 1) {
       this.#activeLineFromStartPoint.push(lineFromStartPoint);
       console.log(this.#activeLineFromStartPoint);
@@ -112,19 +120,28 @@ export class PolygonDrawer {
 
   static addLine(options) {
     let pointer = this.#canvas.getPointer(options.e, false);
-    if (this.#activeLineFromEndPoint) {
-      this.#activeLineFromEndPoint.set({
-        x2: pointer.x,
-        y2: pointer.y,
-      });
+    if (this.#activeShape) {
+      let points = this.#activeShape.get("points");
+      console.log(this.#pointsArray.length);
+      points[this.#circleArray.length] = new fabric.Point(pointer.x, pointer.y);
+      console.log(this.#activeShape);
+      // let polygon = new fabric.Polygon(points, this.#polygonOptions);
+      // this.#canvas.remove(this.#activeShape);
     }
-    if (this.#activeLineFromStartPoint.length != 0) {
-      console.log(this.#activeLineFromStartPoint);
-      this.#activeLineFromStartPoint[0].set({
-        x2: pointer.x,
-        y2: pointer.y,
-      });
-    }
+
+    // if (this.#activeLineFromEndPoint) {
+    //   this.#activeLineFromEndPoint.set({
+    //     x2: pointer.x,
+    //     y2: pointer.y,
+    //   });
+    // }
+    // if (this.#activeLineFromStartPoint.length != 0) {
+    //   console.log(this.#activeLineFromStartPoint);
+    //   this.#activeLineFromStartPoint[0].set({
+    //     x2: pointer.x,
+    //     y2: pointer.y,
+    //   });
+    // }
     this.#canvas.renderAll();
   }
   static generatePolygon(options) {
