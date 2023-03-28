@@ -40,9 +40,9 @@ export class PolygonDrawer {
     evented: false,
   };
 
-  constructor(canvas) {
-    PolygonDrawer.#canvas = canvas;
-  }
+  // constructor(canvas) {
+  //   PolygonDrawer.#canvas = canvas;
+  // }
 
   static canvasSetter(canvas) {
     this.#canvas = canvas;

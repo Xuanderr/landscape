@@ -24,7 +24,9 @@ const constants = {
   backgroundUrl: "img/grid.svg",
 };
 
-let currentMode = "default";
+const projectOptions = {
+  currentMode: "default",
+};
 
 const eventActions = {
   canvasZoomAction: (options) => {
@@ -57,16 +59,15 @@ actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
 
 const btn = document.getElementById("addBtn");
-const polygonDrawer = new PolygonDrawer(canvas);
 btn.addEventListener("click", () => {
-  if (currentMode === "default") {
-    console.log("kek");
-    currentMode = "polygon";
-    polygonDrawer.eventSetter();
+  if (projectOptions.currentMode === "default") {
+    projectOptions.currentMode = "polygon";
+    PolygonDrawer.canvasSetter(canvas);
+    PolygonDrawer.eventSetter();
   }
-  if (currentMode === "polygon") {
-    currentMode = "default";
-    polygonDrawer.eventRemover();
+  if (projectOptions.currentMode === "polygon") {
+    projectOptions.currentMode = "default";
+    PolygonDrawer.eventRemover();
   }
   console.log(projectOptions.currentMode);
 });
