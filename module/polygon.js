@@ -4,7 +4,7 @@ export class PolygonDrawer {
   static #linesArray = [];
   static #circleArray = [];
   static #activeLineFromEndPoint = null;
-  static #activeLineFromStartPoint = null;
+  static #activeLineFromStartPoint = [];
   static #activeShape = null;
   static #circleOptions = {
     radius: 5,
@@ -48,6 +48,11 @@ export class PolygonDrawer {
     this.#canvas = canvas;
   }
 
+  static canvasGetter() {
+    console.log("kek");
+    return this.#canvas;
+  }
+
   clearDrawerOptions() {
     this.#activeLineFromEndPoint = null;
     this.#activeLineFromStartPoint = null;
@@ -58,8 +63,16 @@ export class PolygonDrawer {
   }
 
   static addPoint(options) {
+    // if (this.#activeLineFromStartPoint) {
+    //   this.#canvas.remove(this.#activeLineFromStartPoint);
+    // }
     let pointer = this.#canvas.getPointer(options.e, false);
     let circle = new fabric.Circle(this.#circleOptions);
+    circle.set({
+      left: pointer.x,
+      top: pointer.y,
+    });
+    console.log(this.#pointsArray);
     if (this.#pointsArray.length === 0) {
       circle.set({
         fill: "red",
@@ -69,14 +82,14 @@ export class PolygonDrawer {
       [pointer.x, pointer.y, pointer.x, pointer.y],
       this.#lineOptions
     );
-    let lineFromStartPoint;
-    if (this.#pointsArray.length > 1) {
-      let x = this.#pointsArray[0].left;
-      let y = this.#pointsArray[0].top;
-      lineFromStartPoint = new fabric.Line([x, y, x, y], this.#lineOptions);
-    }
     this.#pointsArray.push(new fabric.Point(pointer.x, pointer.y));
     this.#circleArray.push(circle);
+    let lineFromStartPoint;
+    if (this.#pointsArray.length > 1) {
+      let x = this.#pointsArray[0].x;
+      let y = this.#pointsArray[0].y;
+      lineFromStartPoint = new fabric.Line([x, y, x, y], this.#lineOptions);
+    }
     let polygon = new fabric.Polygon(this.#pointsArray, this.#polygonOptions);
     if (this.#activeShape) {
       this.#canvas.remove(this.#activeShape);
@@ -85,9 +98,14 @@ export class PolygonDrawer {
     this.#activeLineFromEndPoint = lineFromEndPoint;
     this.#linesArray.push(lineFromEndPoint);
     this.#canvas.add(circle, lineFromEndPoint, polygon);
+    console.log(this.#canvas.getObjects());
     if (this.#pointsArray.length > 1) {
-      this.#activeLineFromStartPoint = lineFromStartPoint;
-      this.#canvas.add(lineFromStartPoint);
+      this.#activeLineFromStartPoint.push(lineFromStartPoint);
+      console.log(this.#activeLineFromStartPoint);
+      if (this.#activeLineFromStartPoint.length > 1) {
+        this.#canvas.remove(this.#activeLineFromStartPoint.shift());
+      }
+      this.#canvas.add(this.#activeLineFromStartPoint[0]);
     }
     this.#canvas.renderAll();
   }
@@ -100,8 +118,9 @@ export class PolygonDrawer {
         y2: pointer.y,
       });
     }
-    if (this.#activeLineFromStartPoint) {
-      this.#activeLineFromEndPoint.set({
+    if (this.#activeLineFromStartPoint.length != 0) {
+      console.log(this.#activeLineFromStartPoint);
+      this.#activeLineFromStartPoint[0].set({
         x2: pointer.x,
         y2: pointer.y,
       });
@@ -127,16 +146,16 @@ export class PolygonDrawer {
   }
 
   static eventSetter() {
-    this.#canvas.on("mouse:down", this.addPoint);
-    this.#canvas.on("mouse:move", this.addLine);
+    this.#canvas.on("mouse:down", this.addPoint.bind(this));
+    this.#canvas.on("mouse:move", this.addLine.bind(this));
     this.#canvas.on("mouse:dblclick", this.generatePolygon);
-    console.log(this.#canvas);
-    console.log(this.addPoint);
+    console.log(this.#canvas.__eventListeners);
   }
 
   static eventRemover() {
     this.#canvas.off("mouse:down", this.addPoint);
     this.#canvas.off("mouse:move", this.addLine);
     this.#canvas.off("mouse:dblclick", this.generatePolygon);
+    console.log(this.#canvas.__eventListeners);
   }
 }

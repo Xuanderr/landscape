@@ -64,8 +64,7 @@ btn.addEventListener("click", () => {
     projectOptions.currentMode = "polygon";
     PolygonDrawer.canvasSetter(canvas);
     PolygonDrawer.eventSetter();
-  }
-  if (projectOptions.currentMode === "polygon") {
+  } else {
     projectOptions.currentMode = "default";
     PolygonDrawer.eventRemover();
   }
