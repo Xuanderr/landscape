@@ -7,6 +7,7 @@ export class PolygonDrawer {
   static #activeLineFromStartPoint = null;
   static #activeShape = null;
   static #circleOptions = {
+
     radius: 5,
     fill: "#ffffff",
     stroke: "#333333",
