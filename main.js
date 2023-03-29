@@ -58,12 +58,44 @@ setBackground(constants.backgroundUrl, canvas);
 actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
 
-// line.on("mouseover", () => {
-//   console.log("kek");
-//   line.set({
-//     fill: "red",
-//   });
+let line = new fabric.Line([100, 100, 200, 200], {
+  stroke: "#333333",
+  strokeWidth: 2,
+  borderColor: "#00c3f9",
+  borderScaleFactor: 1,
+});
+
+let rect = new fabric.Rect({
+  left: 300,
+  top: 300,
+  height: 70,
+  width: 150,
+  fill: "red",
+  borderColor: "#00c3f9",
+  borderScaleFactor: 1,
+});
+// line.on("mouseover", (options) => {
+//   if (
+//     line.containsPoint(new fabric.Point(options.point.x, options.pointer.y))
+//   ) {
+//     console.log("kek");
+//   }
+
+//   // line.set({
+//   //   stroke: "red",
+//   // });
+//   canvas.renderAll();
 // });
+// line.on("mouseout", () => {
+//   console.log("kek1");
+//   line.set({
+//     stroke: "green",
+//   });
+//   canvas.renderAll();
+// });
+canvas.add(line, rect);
+console.log(line);
+console.log(rect);
 
 const btn = document.getElementById("addBtn");
 btn.addEventListener("click", () => {
