@@ -1,5 +1,5 @@
-body,
-html {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -20,6 +20,34 @@ html {
   height: calc(100vh - 50px);
 }
 
+#toolbar {
+  position: absolute;
+  left: 10px;
+  top: calc(100vh / 5);
+  background-color: cadetblue;
+  border-radius: 5px;
+  padding: 10px 0;
+}
+
+.toolbar_element {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
 /* #work_space {
   border: 5px solid red;
 } */
+
+/* position: fixed;
+    z-index: 10;
+    top: calc((100% + var(--page-offset-top))/ 2);
+    left: 0.5rem;
+    background-color: #fff;
+    border-radius: 4px;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -webkit-transform: translate(0,-50%);
+    -ms-transform: translate(0,-50%);
+    transform: translate(0,-50%);
+    border: 1px solid #dee5e8;
+    -webkit-box-shadow: 0 0 5px rgb(0 0 0 / 15%);
+    box-shadow: 0 0 5px rgb(0 0 0 / 15%); */

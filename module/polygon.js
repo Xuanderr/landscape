@@ -137,7 +137,7 @@ export class PolygonDrawer {
       opacity: 1,
       dirty: false,
       objectCaching: false,
-      selectable: true,
+      selectable: false,
     });
     this.#canvas.add(polygon);
     //this.#canvas.set
