@@ -14,28 +14,39 @@
     <div id="container">
       <canvas id="work_space"></canvas>
     </div>
-    <div id="toolbar">
-      <a class="toolbar_element" href="#">
-        <img class="toolbar_icon" src="/img/soil.svg" />
-        Участки
-      </a>
-      <a class="toolbar_element" href="#">
-        <img src="/img/trees.svg" />
-        Деревья
-      </a>
-      <a class="toolbar_element" href="#">
-        <img src="/img/house.svg" />
-        Строения
-      </a>
-      <a class="toolbar_element" href="#">
-        <img src="/img/footpath.svg" />
-        Дорожки
-      </a>
-      <a class="toolbar_element" href="#">
-        <img src="/img/pavilion.svg" />
-        Прочее
-      </a>
-    </div>
+    <ul id="toolbar">
+      <li class="toolbar_element">
+        <div id="m">menu</div>
+        <a class="toolbar_link" href="#">
+          <img class="toolbar_icon" src="img/toolbarIcons/soil.png" alt="soil"/>
+          Участки
+        </a>
+      </li>
+      <li class="toolbar_element">
+        <a class="toolbar_link" href="#">
+          <img class="toolbar_icon" src="img/toolbarIcons/trees.png" alt="trees"/>
+          Деревья
+        </a>
+      </li>
+      <li class="toolbar_element">
+        <a class="toolbar_link" href="#">
+          <img class="toolbar_icon" src="img/toolbarIcons/house.png" alt="house"/>
+          Строения
+        </a>
+      </li>
+      <li class="toolbar_element">
+        <a class="toolbar_link" href="#">
+          <img class="toolbar_icon" src="img/toolbarIcons/footpath.png" alt="footpath"/>
+          Дорожки
+        </a>
+      </li>
+      <li class="toolbar_element">
+        <a class="toolbar_link" href="#">
+          <img class="toolbar_icon" src="img/toolbarIcons/pavilion.png" alt="pavilion"/>
+          Прочее
+        </a>
+      </li>
+    </ul>
   </body>
 </html>
 <script type="text/javascript" src="lib/fabric.min.js"></script>
