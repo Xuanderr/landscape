@@ -114,5 +114,4 @@ btn.addEventListener("click", () => {
     projectOptions.currentMode = "default";
     PolygonDrawer.eventRemover();
   }
-  console.log(projectOptions.currentMode);
 });

@@ -63,26 +63,68 @@ export class PolygonDrawer {
   }
 
   static #specialPointCheck(pointer) {
-    let lastPoint = this.#circleArray[this.#circleArray.length -1]
-    let startPoint = this.#circleArray[0]
-    if(pointer.x >= lastPoint.left - 5 && pointer.x < lastPoint.left + 5) {
+    let lastPointLeftBorder = this.#circleArray[this.#circleArray.length -1].left - 5;
+    let lastPointRightBorder = this.#circleArray[this.#circleArray.length -1].left + 5;
+    let lastPointTopBorder = this.#circleArray[this.#circleArray.length -1].top + 5;
+    let lastPointBottomBorder = this.#circleArray[this.#circleArray.length -1].top - 5;
+    let startPointLeftBorder = this.#circleArray[0].left - 5;
+    let startPointRightBorder = this.#circleArray[0].left + 5;
+    let startPointTopBorder = this.#circleArray[0].top + 5;
+    let startPointBottomBorder = this.#circleArray[0].top - 5;
+    let x = pointer.x;
+    let y = pointer.y;
+    if((x >= lastPointLeftBorder && x < lastPointRightBorder) || (y >= lastPointBottomBorder && y < lastPointTopBorder) ||
+        (x >= startPointLeftBorder && x < startPointRightBorder) || (y >= startPointBottomBorder && y < startPointTopBorder)) {
       this.#currentPoint.isSpecialPoint = true;
-      this.#currentPoint.x = lastPoint.left;
-      this.#activeLineFromEndPoint.set({
-        stroke: 'green'
-      })
-      console.log('activeLineFromEndPoint green')
+      if((x >= lastPointLeftBorder && x < lastPointRightBorder) || (y >= lastPointBottomBorder && y < lastPointTopBorder)) {
+        this.#activeLineFromEndPoint.set({
+          stroke: 'green'
+        })
+        if(x >= lastPointLeftBorder && x < lastPointRightBorder) {
+          this.#currentPoint.x = lastPointLeftBorder + 5;
+        } else {
+          this.#currentPoint.x = x
+        }
+        if(y >= lastPointBottomBorder && y < lastPointTopBorder) {
+          this.#currentPoint.y = lastPointBottomBorder + 5;
+        } else {
+          this.#currentPoint.y = y
+        }
+      } else {
+        this.#activeLineFromStartPoint.set({
+          stroke: 'green'
+        })
+        if(x >= startPointLeftBorder && x < startPointRightBorder) {
+          this.#currentPoint.x = startPointLeftBorder + 5;
+        } else {
+          this.#currentPoint.x = x
+        }
+        if(y >= startPointBottomBorder && y < startPointTopBorder) {
+          this.#currentPoint.y = startPointBottomBorder + 5;
+        } else {
+          this.#currentPoint.y = y
+        }
+      }
     } else {
+      this.#currentPoint.x = x
+      this.#currentPoint.y = y
       this.#activeLineFromEndPoint.set({
+        stroke: '#999999'
+      })
+      this.#activeLineFromStartPoint.set({
         stroke: '#999999'
       })
     }
   }
   static addPoint(options) {
+    console.log(options.e)
     let pointer = this.#canvas.getPointer(options.e, false);
-    if (this.#circleArray.length === 0 ||
-        (pointer.x !== this.#circleArray[this.#circleArray.length-1].left &&
-            pointer.y !== this.#circleArray[this.#circleArray.length-1].top)) {
+    //if (this.#circleArray.length === 0
+        // ||
+        // (pointer.x !== this.#circleArray[this.#circleArray.length-1].left &&
+        //     pointer.y !== this.#circleArray[this.#circleArray.length-1].top)
+    //)
+    //{
       let circle = new fabric.Circle(this.#circleOptions);
       circle.set({
         left: pointer.x,
@@ -94,11 +136,15 @@ export class PolygonDrawer {
         });
       }
       this.#pointsArray.push(new fabric.Point(pointer.x, pointer.y));
+      if(this.#activeLineFromEndPoint) {
+        this.#activeLineFromEndPoint.set({
+          stroke: '#999999'
+        })
+      }
       this.#activeLineFromEndPoint = new fabric.Line(
           [pointer.x, pointer.y, pointer.x, pointer.y],
           this.#lineOptions
       );
-
       this.#circleArray.push(circle);
       if (!this.#activeLineFromStartPoint) {
         let x = this.#pointsArray[0].x;
@@ -118,32 +164,37 @@ export class PolygonDrawer {
       this.#canvas.add(circle, this.#activeLineFromEndPoint, this.#activeShape);
       this.#canvas.renderAll();
       console.log(this.#circleArray)
-    }
+    //}
   }
 
   static addLine(options) {
     if(this.#circleArray.length !== 0){
       let pointer = this.#canvas.getPointer(options.e, false);
+      this.#specialPointCheck(pointer)
       if (this.#activeShape) {
         let points = this.#activeShape.get("points");
-        points[this.#circleArray.length] = new fabric.Point(pointer.x, pointer.y);
+        points[this.#circleArray.length] = new fabric.Point(this.#currentPoint.x, this.#currentPoint.y);
       }
-      // if (pointer.x === this.#circleArray[this.#circleArray.length -1].left ||
-      //     pointer.y === this.#circleArray[this.#circleArray.length -1].top) {
-      //   this.#activeLineFromEndPoint.set({
-      //     stroke: 'green'
-      //   })
-      //   console.log('activeLineFromEndPoint green')
-      // }
-      this.#specialPointCheck(pointer)
       this.#activeLineFromEndPoint.set({
-        x2: pointer.x,
-        y2: pointer.y,
+        x2: this.#currentPoint.x,
+        y2: this.#currentPoint.y,
       });
       this.#activeLineFromStartPoint.set({
-        x2: pointer.x,
-        y2: pointer.y,
+        x2: this.#currentPoint.x,
+        y2: this.#currentPoint.y,
       });
+      // if (this.#activeShape) {
+      //   let points = this.#activeShape.get("points");
+      //   points[this.#circleArray.length] = new fabric.Point(pointer.x, pointer.y);
+      // }
+      // this.#activeLineFromEndPoint.set({
+      //   x2: pointer.x,
+      //   y2: pointer.y,
+      // });
+      // this.#activeLineFromStartPoint.set({
+      //   x2: pointer.x,
+      //   y2: pointer.y,
+      // });
       this.#canvas.renderAll();
     }
   }
@@ -179,13 +230,11 @@ export class PolygonDrawer {
     this.#canvas.on("mouse:down", this.addPoint.bind(this));
     this.#canvas.on("mouse:move", this.addLine.bind(this));
     this.#canvas.on("mouse:dblclick", this.generatePolygon.bind(this));
-    console.log(this.#canvas.__eventListeners);
   }
 
   static eventRemover() {
     this.#canvas.off("mouse:down");
     this.#canvas.off("mouse:move");
     this.#canvas.off("mouse:dblclick");
-    console.log(this.#canvas.__eventListeners);
   }
 }
