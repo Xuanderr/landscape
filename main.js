@@ -58,13 +58,70 @@ setBackground(constants.backgroundUrl, canvas);
 actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
 
-// let line = new fabric.Line([100, 100, 200, 200], {
-//   stroke: "#333333",
-//   strokeWidth: 2,
-//   borderColor: "#00c3f9",
-//   borderScaleFactor: 1,
-// });
 
+let Edge = fabric.util.createClass(fabric.Line, {
+
+  type: 'edge',
+  // initialize can be of type function(options) or function(property, options), like for text.
+  // no other signatures allowed.
+  initialize: function (points, options) {
+    options = options || {};
+    this.points = points || [];
+
+    this.callSuper('initialize', points, options);
+    this.set('label', options.label || '');
+  },
+
+  toObject: function () {
+    return fabric.util.object.extend(this.callSuper('toObject'), {
+      label: this.get('label')
+    });
+  },
+
+  _render: function (ctx) {
+    this.callSuper('_render', ctx);
+
+    ctx.font = '15px Helvetica';
+    ctx.fillStyle = '#333';
+    ctx.fillText(this.label, Math.abs(this.x1 - this.x2) / 2, Math.abs(this.y1 - this.y2) / 2);
+  }
+});
+
+
+let lr = new Edge([250, 125, 500, 125], {
+  fill: 'green',
+  stroke: 'green',
+  strokeWidth: 1,
+  selectable: true,
+  evented: true,
+  hasBorders: false,
+  cornerStyle: 'circle',
+  lockScalingX: true,
+  lockScalingY: true,
+  label: '1'
+});
+canvas.add(lr);
+console.log(lr)
+console.log(fabric.util.radiansToDegrees(fabric.util.calcAngleBetweenVectors(new fabric.Point(250, 125), new fabric.Point(500, 125))))
+
+let line1 = new fabric.Line([100, 100, 200, 100], {
+  stroke: "#333333",
+  strokeWidth: 2,
+  borderColor: "#00c3f9",
+  angle: 45
+});
+let line2 = new fabric.Line([100, 100, 200, 100], {
+  stroke: "#333333",
+  strokeWidth: 2,
+  borderColor: "#00c3f9",
+});
+
+
+canvas.add(line1, line2);
+console.log('line1');
+console.log(line1.angle);
+console.log('line2');
+console.log(line2.angle);
 // let rect = new fabric.Rect({
 //   left: 300,
 //   top: 300,
