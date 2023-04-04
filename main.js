@@ -1,5 +1,5 @@
-import { PolygonDrawer } from "./module/polygon.js";
-
+import {PolygonDrawer} from "./module/polygon.js";
+import {LabeledLine} from './module/script.js'
 const initCanvas = (workSpace, container) => {
   return new fabric.Canvas(workSpace, {
     width: document.getElementById(container).clientWidth,
@@ -83,7 +83,8 @@ let Edge = fabric.util.createClass(fabric.Line, {
 
     ctx.font = '15px Helvetica';
     ctx.fillStyle = '#333';
-    ctx.fillText(this.label, Math.abs(this.x1 - this.x2) / 2, Math.abs(this.y1 - this.y2) / 2);
+    ctx.translate(-20, 0);
+    ctx.strokeText(this.label, 0, 0)
   }
 });
 
@@ -92,18 +93,9 @@ let lr = new Edge([250, 125, 500, 125], {
   fill: 'green',
   stroke: 'green',
   strokeWidth: 1,
-  selectable: true,
-  evented: true,
-  hasBorders: false,
-  cornerStyle: 'circle',
-  lockScalingX: true,
-  lockScalingY: true,
-  label: '1'
+  label: 'hello world'
 });
 canvas.add(lr);
-console.log(lr)
-console.log(fabric.util.radiansToDegrees(fabric.util.calcAngleBetweenVectors(new fabric.Point(250, 125), new fabric.Point(500, 125))))
-
 let line1 = new fabric.Line([100, 100, 200, 100], {
   stroke: "#333333",
   strokeWidth: 2,
@@ -118,10 +110,7 @@ let line2 = new fabric.Line([100, 100, 200, 100], {
 
 
 canvas.add(line1, line2);
-console.log('line1');
-console.log(line1.angle);
-console.log('line2');
-console.log(line2.angle);
+
 // let rect = new fabric.Rect({
 //   left: 300,
 //   top: 300,

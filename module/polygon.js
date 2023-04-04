@@ -150,6 +150,10 @@ export class PolygonDrawer {
         let x = this.#pointsArray[0].x;
         let y = this.#pointsArray[0].y;
         this.#activeLineFromStartPoint = new fabric.Line([x, y, x, y], this.#lineOptions);
+        this.#activeLineFromStartPoint.on('object:modified', () => {
+          console.log('kek')
+        })
+        console.log(this.#activeLineFromStartPoint)
         this.#canvas.add(this.#activeLineFromStartPoint);
       }
 
@@ -183,6 +187,7 @@ export class PolygonDrawer {
         x2: this.#currentPoint.x,
         y2: this.#currentPoint.y,
       });
+      this.#activeLineFromStartPoint.fire('object:modified')
       // if (this.#activeShape) {
       //   let points = this.#activeShape.get("points");
       //   points[this.#circleArray.length] = new fabric.Point(pointer.x, pointer.y);
