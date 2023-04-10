@@ -185,7 +185,7 @@ export class PolygonDrawer {
       });
       this.#activeLineFromStartPoint.set({
         x2: this.#currentPoint.x,
-        y2: this.#currentPoint.y,
+        y2: this.#currentPoint.y
       });
       this.#activeLineFromStartPoint.fire('object:modified')
       // if (this.#activeShape) {

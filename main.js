@@ -1,5 +1,5 @@
 import {PolygonDrawer} from "./module/polygon.js";
-import {LabeledLine} from './module/script.js'
+import {LabeledLine} from './module/labeledLine.js'
 const initCanvas = (workSpace, container) => {
   return new fabric.Canvas(workSpace, {
     width: document.getElementById(container).clientWidth,
