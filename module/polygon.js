@@ -117,58 +117,52 @@ export class PolygonDrawer {
     }
   }
   static addPoint(options) {
-    console.log(options.e)
     let pointer = this.#canvas.getPointer(options.e, false);
-    //if (this.#circleArray.length === 0
-        // ||
-        // (pointer.x !== this.#circleArray[this.#circleArray.length-1].left &&
-        //     pointer.y !== this.#circleArray[this.#circleArray.length-1].top)
-    //)
-    //{
-      let circle = new fabric.Circle(this.#circleOptions);
+    let circle = new fabric.Circle(this.#circleOptions);
+    if (this.#circleArray.length === 0) {
       circle.set({
-        left: pointer.x,
-        top: pointer.y,
+        fill: "red",
       });
-      if (this.#pointsArray.length === 0) {
-        circle.set({
-          fill: "red",
-        });
-      }
-      this.#pointsArray.push(new fabric.Point(pointer.x, pointer.y));
-      if(this.#activeLineFromEndPoint) {
-        this.#activeLineFromEndPoint.set({
-          stroke: '#999999'
-        })
-      }
-      this.#activeLineFromEndPoint = new fabric.Line(
-          [pointer.x, pointer.y, pointer.x, pointer.y],
-          this.#lineOptions
-      );
-      this.#circleArray.push(circle);
-      if (!this.#activeLineFromStartPoint) {
-        let x = this.#pointsArray[0].x;
-        let y = this.#pointsArray[0].y;
-        this.#activeLineFromStartPoint = new fabric.Line([x, y, x, y], this.#lineOptions);
-        this.#activeLineFromStartPoint.on('object:modified', () => {
-          console.log('kek')
-        })
-        console.log(this.#activeLineFromStartPoint)
-        this.#canvas.add(this.#activeLineFromStartPoint);
-      }
+      this.#currentPoint.x = pointer.x;
+      this.#currentPoint.y = pointer.y;
+    }
+    circle.set({
+      left: this.#currentPoint.x,
+      top: this.#currentPoint.y,
+    });
+    this.#pointsArray.push(new fabric.Point(this.#currentPoint.x, this.#currentPoint.y));
+    if(this.#activeLineFromEndPoint) {
+      this.#activeLineFromEndPoint.set({
+        stroke: '#999999'
+      })
+    }
+    this.#activeLineFromEndPoint = new fabric.Line(
+        [this.#currentPoint.x, this.#currentPoint.y, this.#currentPoint.x, this.#currentPoint.y],
+        this.#lineOptions
+    );
+    this.#circleArray.push(circle);
+    if (!this.#activeLineFromStartPoint) {
+      let x = this.#pointsArray[0].x;
+      let y = this.#pointsArray[0].y;
+      this.#activeLineFromStartPoint = new fabric.Line([x, y, x, y], this.#lineOptions);
+      this.#activeLineFromStartPoint.on('object:modified', () => {
+        console.log('kek')
+      })
+      console.log(this.#activeLineFromStartPoint)
+      this.#canvas.add(this.#activeLineFromStartPoint);
+    }
 
-      let polygon = new fabric.Polygon(this.#pointsArray, this.#polygonOptions);
+    let polygon = new fabric.Polygon(this.#pointsArray, this.#polygonOptions);
 
-      if (this.#activeShape) {
-        this.#canvas.remove(this.#activeShape);
-      }
-      this.#activeShape = polygon;
+    if (this.#activeShape) {
+      this.#canvas.remove(this.#activeShape);
+    }
+    this.#activeShape = polygon;
 
-      this.#linesArray.push(this.#activeLineFromEndPoint);
-      this.#canvas.add(circle, this.#activeLineFromEndPoint, this.#activeShape);
-      this.#canvas.renderAll();
-      console.log(this.#circleArray)
-    //}
+    this.#linesArray.push(this.#activeLineFromEndPoint);
+    this.#canvas.add(circle, this.#activeLineFromEndPoint, this.#activeShape);
+    this.#canvas.renderAll();
+    console.log(this.#circleArray)
   }
 
   static addLine(options) {
@@ -188,18 +182,6 @@ export class PolygonDrawer {
         y2: this.#currentPoint.y
       });
       this.#activeLineFromStartPoint.fire('object:modified')
-      // if (this.#activeShape) {
-      //   let points = this.#activeShape.get("points");
-      //   points[this.#circleArray.length] = new fabric.Point(pointer.x, pointer.y);
-      // }
-      // this.#activeLineFromEndPoint.set({
-      //   x2: pointer.x,
-      //   y2: pointer.y,
-      // });
-      // this.#activeLineFromStartPoint.set({
-      //   x2: pointer.x,
-      //   y2: pointer.y,
-      // });
       this.#canvas.renderAll();
     }
   }
