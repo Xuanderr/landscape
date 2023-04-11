@@ -58,59 +58,6 @@ setBackground(constants.backgroundUrl, canvas);
 actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
 
-
-let Edge = fabric.util.createClass(fabric.Line, {
-
-  type: 'edge',
-  // initialize can be of type function(options) or function(property, options), like for text.
-  // no other signatures allowed.
-  initialize: function (points, options) {
-    options = options || {};
-    this.points = points || [];
-
-    this.callSuper('initialize', points, options);
-    this.set('label', options.label || '');
-  },
-
-  toObject: function () {
-    return fabric.util.object.extend(this.callSuper('toObject'), {
-      label: this.get('label')
-    });
-  },
-
-  _render: function (ctx) {
-    this.callSuper('_render', ctx);
-
-    ctx.font = '15px Helvetica';
-    ctx.fillStyle = '#333';
-    ctx.translate(-20, 0);
-    ctx.strokeText(this.label, 0, 0)
-  }
-});
-
-
-let lr = new Edge([250, 125, 500, 125], {
-  fill: 'green',
-  stroke: 'green',
-  strokeWidth: 1,
-  label: 'hello world'
-});
-canvas.add(lr);
-let line1 = new fabric.Line([100, 100, 200, 100], {
-  stroke: "#333333",
-  strokeWidth: 2,
-  borderColor: "#00c3f9",
-  angle: 45
-});
-let line2 = new fabric.Line([100, 100, 200, 100], {
-  stroke: "#333333",
-  strokeWidth: 2,
-  borderColor: "#00c3f9",
-});
-
-
-canvas.add(line1, line2);
-
 // let rect = new fabric.Rect({
 //   left: 300,
 //   top: 300,

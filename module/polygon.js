@@ -62,7 +62,7 @@ export class PolygonDrawer {
     this.#pointsArray = [];
   }
 
-  static #specialPointCheck(pointer) {
+  static #pointCheck(pointer) {
     let lastPointLeftBorder = this.#circleArray[this.#circleArray.length -1].left - 5;
     let lastPointRightBorder = this.#circleArray[this.#circleArray.length -1].left + 5;
     let lastPointTopBorder = this.#circleArray[this.#circleArray.length -1].top + 5;
@@ -168,7 +168,7 @@ export class PolygonDrawer {
   static addLine(options) {
     if(this.#circleArray.length !== 0){
       let pointer = this.#canvas.getPointer(options.e, false);
-      this.#specialPointCheck(pointer)
+      this.#pointCheck(pointer)
       if (this.#activeShape) {
         let points = this.#activeShape.get("points");
         points[this.#circleArray.length] = new fabric.Point(this.#currentPoint.x, this.#currentPoint.y);
