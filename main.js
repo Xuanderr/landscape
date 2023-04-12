@@ -58,16 +58,19 @@ setBackground(constants.backgroundUrl, canvas);
 actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
 
-// let rect = new fabric.Rect({
+// let circle = new fabric.Circle({
 //   left: 300,
 //   top: 300,
-//   height: 70,
-//   width: 150,
-//   fill: "red",
-//   borderColor: "#00c3f9",
-//   borderScaleFactor: 1,
+//   radius: 40,
+//   backgroundColor: 'red'
 // });
-
+// circle.setBackgroundColor( {
+//       source: './img/checkmark.svg',
+//       /*repeat: "repeat", crossOrigin: null*/
+//       crossOrigin: null,
+//     },
+//     canvas.renderAll.bind(circle)
+// )
 // rect.on("moving", () => {
 //   if (rect.intersectsWithObject(line, true, false)) {
 //     console.log("kek");

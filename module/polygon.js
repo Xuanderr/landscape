@@ -14,7 +14,7 @@ export class PolygonDrawer {
   }
   static #circleOptions = {
     radius: 5,
-    fill: "#ffffff",
+    fill: "red",
     stroke: "#999999",
     strokeWidth: 0.5,
     originX: "center",
@@ -34,13 +34,10 @@ export class PolygonDrawer {
     selectable: false,
     hasBorders: false,
     hasControls: false,
-    evented: true,
+    evented: false,
   };
 
   static #polygonOptions = {
-    //strokeDashArray: [5, 5],
-    // stroke: "#333333",
-    // strokeWidth: 2,
     fill: "#cccccc",
     opacity: 0.1,
     dirty: false,
@@ -115,12 +112,15 @@ export class PolygonDrawer {
     }
   }
   static addPoint(options) {
-    let pointer = this.#canvas.getPointer(options.e, false);
+    if(this.#circleArray.length !== 0 &&
+        this.#circleArray[this.#circleArray.length-1]
+            .containsPoint(new fabric.Point(this.#currentPoint.x,this.#currentPoint.y))) {
+      this.generatePolygon(options);
+      return;
+    }
     let circle = new fabric.Circle(this.#circleOptions);
     if (this.#circleArray.length === 0) {
-      circle.set({
-        fill: "red",
-      });
+      let pointer = this.#canvas.getPointer(options.e, false);
       this.#currentPoint.x = pointer.x;
       this.#currentPoint.y = pointer.y;
     }
@@ -133,7 +133,8 @@ export class PolygonDrawer {
     if(this.#activeLineFromEndPoint) {
       this.#activeLineFromEndPoint.toGrayLine();
     }
-    this.#activeLineFromEndPoint = new LabeledLine([this.#currentPoint.x, this.#currentPoint.y, this.#currentPoint.x, this.#currentPoint.y], '')
+    this.#activeLineFromEndPoint = new LabeledLine(
+        [this.#currentPoint.x, this.#currentPoint.y, this.#currentPoint.x, this.#currentPoint.y], '')
     this.#circleArray.push(circle);
     if (!this.#activeLineFromStartPoint && this.#circleArray.length > 1) {
       let x = this.#pointsArray[0].x;
@@ -158,6 +159,9 @@ export class PolygonDrawer {
 
   static addLine(options) {
     if(this.#circleArray.length !== 0){
+      this.#circleArray[this.#circleArray.length-1].set({
+        fill: '#ffffff'
+      });
       let pointer = this.#canvas.getPointer(options.e, false);
       this.#pointCheck(pointer)
       if (this.#activeShape) {
@@ -177,18 +181,19 @@ export class PolygonDrawer {
     this.#circleArray.forEach((element) => {
       this.#canvas.remove(element);
     });
-    this.#linesArray.forEach((element) => {
-      this.#canvas.remove(element);
-    });
+    // this.#linesArray.forEach((element) => {
+    //   this.#canvas.remove(element);
+    // });
     this.#canvas
       .remove(this.#activeLineFromEndPoint)
       .remove(this.#activeLineFromStartPoint)
       .remove(this.#activeShape);
     let polygon = new fabric.Polygon(this.#pointsArray, {
-      stroke: "#333333",
-      strokeWidth: 0.5,
-      fill: "red",
-      opacity: 1,
+      strokeDashArray: [5, 5],
+      strokeWidth: 2,
+      stroke: "#999999",
+      opacity: 0.1,
+      fill: '#cccccc',
       dirty: false,
       objectCaching: false,
       selectable: false,
@@ -202,12 +207,12 @@ export class PolygonDrawer {
   static eventSetter() {
     this.#canvas.on("mouse:down", this.addPoint.bind(this));
     this.#canvas.on("mouse:move", this.addLine.bind(this));
-    this.#canvas.on("mouse:dblclick", this.generatePolygon.bind(this));
+    //this.#canvas.on("mouse:dblclick", this.generatePolygon.bind(this));
   }
 
   static eventRemover() {
     this.#canvas.off("mouse:down");
     this.#canvas.off("mouse:move");
-    this.#canvas.off("mouse:dblclick");
+    //this.#canvas.off("mouse:dblclick");
   }
 }
