@@ -1,3 +1,4 @@
+import {LabeledLine} from './labeledLine.js'
 export class PolygonDrawer {
   static #canvas = null;
   static #pointsArray = [];
@@ -14,7 +15,7 @@ export class PolygonDrawer {
   static #circleOptions = {
     radius: 5,
     fill: "#ffffff",
-    stroke: "#333333",
+    stroke: "#999999",
     strokeWidth: 0.5,
     originX: "center",
     originY: "center",
@@ -22,6 +23,7 @@ export class PolygonDrawer {
     hasBorders: false,
     hasControls: false,
     class: "CirclePoint",
+    evented: false,
   };
   static #lineOptions = {
     strokeDashArray: [5, 5],
@@ -32,7 +34,7 @@ export class PolygonDrawer {
     selectable: false,
     hasBorders: false,
     hasControls: false,
-    evented: false,
+    evented: true,
   };
 
   static #polygonOptions = {
@@ -77,9 +79,7 @@ export class PolygonDrawer {
         (x >= startPointLeftBorder && x < startPointRightBorder) || (y >= startPointBottomBorder && y < startPointTopBorder)) {
       this.#currentPoint.isSpecialPoint = true;
       if((x >= lastPointLeftBorder && x < lastPointRightBorder) || (y >= lastPointBottomBorder && y < lastPointTopBorder)) {
-        this.#activeLineFromEndPoint.set({
-          stroke: 'green'
-        })
+        this.#activeLineFromEndPoint.toGreenLine();
         if(x >= lastPointLeftBorder && x < lastPointRightBorder) {
           this.#currentPoint.x = lastPointLeftBorder + 5;
         } else {
@@ -91,9 +91,9 @@ export class PolygonDrawer {
           this.#currentPoint.y = y
         }
       } else {
-        this.#activeLineFromStartPoint.set({
-          stroke: 'green'
-        })
+        if(this.#activeLineFromStartPoint) {
+          this.#activeLineFromStartPoint.toGreenLine();
+        }
         if(x >= startPointLeftBorder && x < startPointRightBorder) {
           this.#currentPoint.x = startPointLeftBorder + 5;
         } else {
@@ -108,12 +108,10 @@ export class PolygonDrawer {
     } else {
       this.#currentPoint.x = x
       this.#currentPoint.y = y
-      this.#activeLineFromEndPoint.set({
-        stroke: '#999999'
-      })
-      this.#activeLineFromStartPoint.set({
-        stroke: '#999999'
-      })
+      this.#activeLineFromEndPoint.toGrayLine();
+      if(this.#activeLineFromStartPoint) {
+        this.#activeLineFromStartPoint.toGrayLine();
+      }
     }
   }
   static addPoint(options) {
@@ -130,26 +128,19 @@ export class PolygonDrawer {
       left: this.#currentPoint.x,
       top: this.#currentPoint.y,
     });
+    if (this.#circleArray.length === 0)
     this.#pointsArray.push(new fabric.Point(this.#currentPoint.x, this.#currentPoint.y));
     if(this.#activeLineFromEndPoint) {
-      this.#activeLineFromEndPoint.set({
-        stroke: '#999999'
-      })
+      this.#activeLineFromEndPoint.toGrayLine();
     }
-    this.#activeLineFromEndPoint = new fabric.Line(
-        [this.#currentPoint.x, this.#currentPoint.y, this.#currentPoint.x, this.#currentPoint.y],
-        this.#lineOptions
-    );
+    this.#activeLineFromEndPoint = new LabeledLine([this.#currentPoint.x, this.#currentPoint.y, this.#currentPoint.x, this.#currentPoint.y], '')
     this.#circleArray.push(circle);
-    if (!this.#activeLineFromStartPoint) {
+    if (!this.#activeLineFromStartPoint && this.#circleArray.length > 1) {
       let x = this.#pointsArray[0].x;
       let y = this.#pointsArray[0].y;
       this.#activeLineFromStartPoint = new fabric.Line([x, y, x, y], this.#lineOptions);
-      this.#activeLineFromStartPoint.on('object:modified', () => {
-        console.log('kek')
-      })
-      console.log(this.#activeLineFromStartPoint)
-      this.#canvas.add(this.#activeLineFromStartPoint);
+      this.#activeLineFromStartPoint = new LabeledLine([x, y, x, y], '')
+      this.#activeLineFromStartPoint.add(this.#canvas);
     }
 
     let polygon = new fabric.Polygon(this.#pointsArray, this.#polygonOptions);
@@ -160,9 +151,9 @@ export class PolygonDrawer {
     this.#activeShape = polygon;
 
     this.#linesArray.push(this.#activeLineFromEndPoint);
-    this.#canvas.add(circle, this.#activeLineFromEndPoint, this.#activeShape);
+    this.#canvas.add(circle, this.#activeShape);
+    this.#activeLineFromEndPoint.add(this.#canvas);
     this.#canvas.renderAll();
-    console.log(this.#circleArray)
   }
 
   static addLine(options) {
@@ -173,15 +164,10 @@ export class PolygonDrawer {
         let points = this.#activeShape.get("points");
         points[this.#circleArray.length] = new fabric.Point(this.#currentPoint.x, this.#currentPoint.y);
       }
-      this.#activeLineFromEndPoint.set({
-        x2: this.#currentPoint.x,
-        y2: this.#currentPoint.y,
-      });
-      this.#activeLineFromStartPoint.set({
-        x2: this.#currentPoint.x,
-        y2: this.#currentPoint.y
-      });
-      this.#activeLineFromStartPoint.fire('object:modified')
+      this.#activeLineFromEndPoint.lineTo(this.#currentPoint.x,this.#currentPoint.y, this.#canvas);
+      if(this.#activeLineFromStartPoint) {
+        this.#activeLineFromStartPoint.lineTo(this.#currentPoint.x,this.#currentPoint.y, this.#canvas);
+      }
       this.#canvas.renderAll();
     }
   }

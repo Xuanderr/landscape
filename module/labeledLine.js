@@ -8,7 +8,7 @@ export class LabeledLine {
         selectable: false,
         hasBorders: false,
         hasControls: false,
-        evented: false,
+        evented: true,
     };
 
     #textOptions = {
@@ -20,7 +20,7 @@ export class LabeledLine {
         selectable: false,
         hasBorders: false,
         hasControls: false,
-        evented: false,
+        evented: true,
     };
 
     #lineBefore = new fabric.Line([], this.#lineOptions);
@@ -70,7 +70,7 @@ export class LabeledLine {
             });
         }
     }
-    drawLine(x2, y2, canvas) {
+    lineTo(x2, y2, canvas) {
         this.#coordinates[2] = x2;
         this.#coordinates[3] = y2;
         this.#segmentLength = this.#getSegmentLength();
@@ -120,6 +120,9 @@ export class LabeledLine {
         canvas.add(this.#singleLine);
         this.#isSingleLineOnCanvas = true;
     }
+    getFI() {
+        return this.#fi;
+    }
     toGreenLine() {
         this.#lineBefore.set({
             stroke: 'green'
@@ -134,6 +137,19 @@ export class LabeledLine {
         });
         this.#lineAfter.set({
             stroke: '#999999'
+        });
+    }
+    addEventListener(event) {
+        this.#lineBefore.on(event, () => {
+            console.log('lineBefore')
+        });
+        this.#textArea.on(event, () => {
+            console.log('textArea')
+            console.log(this.#lineBefore)
+            console.log(this.#lineAfter)
+        })
+        this.#lineAfter.on(event, () => {
+            console.log('lineAfter')
         });
     }
     #getSegmentCentre() {
