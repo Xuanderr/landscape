@@ -4,6 +4,7 @@ const initCanvas = (workSpace, container) => {
   return new fabric.Canvas(workSpace, {
     width: document.getElementById(container).clientWidth,
     height: document.getElementById(container).clientHeight,
+    renderOnAddRemove: true
   });
 };
 
@@ -21,7 +22,7 @@ const setBackground = (url, canvas) => {
 const constants = {
   workSpace: "work_space",
   container: "container",
-  backgroundUrl: "img/grid.svg",
+  backgroundUrl: "./img/grid.svg",
 };
 
 const projectOptions = {

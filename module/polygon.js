@@ -8,7 +8,6 @@ export class PolygonDrawer {
   static #activeLineFromStartPoint = null;
   static #activeShape = null;
   static #currentPoint = {
-    isSpecialPoint: false,
     x: 0,
     y: 0
   }
@@ -74,7 +73,6 @@ export class PolygonDrawer {
     let y = pointer.y;
     if((x >= lastPointLeftBorder && x < lastPointRightBorder) || (y >= lastPointBottomBorder && y < lastPointTopBorder) ||
         (x >= startPointLeftBorder && x < startPointRightBorder) || (y >= startPointBottomBorder && y < startPointTopBorder)) {
-      this.#currentPoint.isSpecialPoint = true;
       if((x >= lastPointLeftBorder && x < lastPointRightBorder) || (y >= lastPointBottomBorder && y < lastPointTopBorder)) {
         this.#activeLineFromEndPoint.toGreenLine();
         if(x >= lastPointLeftBorder && x < lastPointRightBorder) {
@@ -111,6 +109,25 @@ export class PolygonDrawer {
       }
     }
   }
+
+  static #isPointOnLine(pointer) {
+    this.#linesArray.forEach((element) => {
+      let compare = (a, b) => {
+        if (a > b) return 1;
+        if (a === b) return 0;
+        if (a < b) return -1;
+      }
+      let coordsX = element.getCoordsX().sort(compare);
+      let coordsY = element.getCoordsY().sort(compare);
+      if(pointer.x >= coordsX[0] && pointer.x <= coordsX[1] && pointer.y >= coordsY[0] && pointer.y <= coordsY[1]) {
+      }
+    })
+  }
+
+  static #pseudoScalar(vector1X, vector1Y, vector2X, vector2Y) {
+    return vector1X * vector2Y - vector2X * vector1Y
+  }
+
   static addPoint(options) {
     if(this.#circleArray.length !== 0 &&
         this.#circleArray[this.#circleArray.length-1]
@@ -142,6 +159,9 @@ export class PolygonDrawer {
       this.#activeLineFromStartPoint = new fabric.Line([x, y, x, y], this.#lineOptions);
       this.#activeLineFromStartPoint = new LabeledLine([x, y, x, y], '')
       this.#activeLineFromStartPoint.add(this.#canvas);
+    }
+    if(this.#activeLineFromStartPoint) {
+      this.#activeLineFromStartPoint.toGrayLine();
     }
 
     let polygon = new fabric.Polygon(this.#pointsArray, this.#polygonOptions);
@@ -175,44 +195,54 @@ export class PolygonDrawer {
       this.#canvas.renderAll();
     }
   }
+
+  static loadPattern(url, shape) {
+    fabric.util.loadImage(url, function(img) {
+      shape.set('fill',  new fabric.Pattern({
+        source: img,
+        //repeat: 'repeat'
+      }));
+    })
+  }
   static generatePolygon(options) {
     let pointer = this.#canvas.getPointer(options.e, false);
     this.#pointsArray.push(new fabric.Point(pointer.x, pointer.y));
     this.#circleArray.forEach((element) => {
       this.#canvas.remove(element);
     });
-    // this.#linesArray.forEach((element) => {
-    //   this.#canvas.remove(element);
-    // });
     this.#canvas
       .remove(this.#activeLineFromEndPoint)
       .remove(this.#activeLineFromStartPoint)
       .remove(this.#activeShape);
     let polygon = new fabric.Polygon(this.#pointsArray, {
-      strokeDashArray: [5, 5],
-      strokeWidth: 2,
-      stroke: "#999999",
+      //strokeDashArray: [5, 5],
+      strokeWidth: 4,
+      stroke: "red",
       opacity: 0.1,
-      fill: '#cccccc',
+      //fill: new fabric.Pattern({source: '../img/retina_wood.png'}),
+      //fill: 'red',
       dirty: false,
       objectCaching: false,
       selectable: false,
+      evented: false
     });
+    this.#canvas.requestRenderAll();
     this.#canvas.add(polygon);
-    //this.#canvas.set
+    //this.#canvas.renderAll.bind(this.#canvas)
+    //PolygonDrawer.loadPattern('../img/retina_wood.png', polygon);
+    //this.#canvas.renderAll();
     console.log(this.#canvas.getObjects());
     this.#clearDrawerOptions();
   }
 
+
   static eventSetter() {
     this.#canvas.on("mouse:down", this.addPoint.bind(this));
     this.#canvas.on("mouse:move", this.addLine.bind(this));
-    //this.#canvas.on("mouse:dblclick", this.generatePolygon.bind(this));
   }
 
   static eventRemover() {
     this.#canvas.off("mouse:down");
     this.#canvas.off("mouse:move");
-    //this.#canvas.off("mouse:dblclick");
   }
 }

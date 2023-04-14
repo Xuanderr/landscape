@@ -8,7 +8,7 @@ export class LabeledLine {
         selectable: false,
         hasBorders: false,
         hasControls: false,
-        evented: true,
+        evented: false,
     };
 
     #textOptions = {
@@ -20,7 +20,7 @@ export class LabeledLine {
         selectable: false,
         hasBorders: false,
         hasControls: false,
-        evented: true,
+        evented: false,
     };
 
     #lineBefore = new fabric.Line([], this.#lineOptions);
@@ -32,10 +32,13 @@ export class LabeledLine {
     #isLabelLineOnCanvas = false;
     #segmentLength = 0;
     #fi = 0;
+    #asVector = {
+        x: 0,
+        y: 0
+    }
     constructor(coordsArray, label) {
         this.#coordinates = coordsArray;
-        this.#segmentLength = this.#getSegmentLength();
-        this.#fi = this.#angle();
+        this.#innerOptionsSetter();
         this.#textArea = new fabric.Text(label, this.#textOptions);
         this.#singleLine.set({
             x1: this.#coordinates[0],
@@ -73,8 +76,7 @@ export class LabeledLine {
     lineTo(x2, y2, canvas) {
         this.#coordinates[2] = x2;
         this.#coordinates[3] = y2;
-        this.#segmentLength = this.#getSegmentLength();
-        this.#fi = this.#angle();
+        this.#innerOptionsSetter();
         if(this.#isShowLabel()) {
             this.#removeSingleLine(canvas);
             let endBefore =  this.#getSmallRadiusPosition();
@@ -139,6 +141,22 @@ export class LabeledLine {
             stroke: '#999999'
         });
     }
+    getCoords() {
+        return this.#coordinates;
+    }
+    getCoordsX() {
+        let res = []
+        res.push(this.#coordinates[0], this.#coordinates[2]);
+        return res;
+    }
+    getCoordsY() {
+        let res = []
+        res.push(this.#coordinates[1], this.#coordinates[3]);
+        return res;
+    }
+    getVector() {
+        return this.#asVector;
+    }
     addEventListener(event) {
         this.#lineBefore.on(event, () => {
             console.log('lineBefore')
@@ -151,6 +169,12 @@ export class LabeledLine {
         this.#lineAfter.on(event, () => {
             console.log('lineAfter')
         });
+    }
+    #innerOptionsSetter() {
+        this.#asVector.x = this.#coordinates[2] -  this.#coordinates[0];
+        this.#asVector.y = this.#coordinates[3] -  this.#coordinates[1];
+        this.#segmentLength = this.#getSegmentLength();
+        this.#fi = this.#angle();
     }
     #getSegmentCentre() {
         let pointX = (this.#coordinates[0] + this.#coordinates[2]) / 2,
