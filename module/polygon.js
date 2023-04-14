@@ -7,6 +7,7 @@ export class PolygonDrawer {
   static #activeLineFromEndPoint = null;
   static #activeLineFromStartPoint = null;
   static #activeShape = null;
+  static #intersectionLine = null;
   static #currentPoint = {
     x: 0,
     y: 0
@@ -109,19 +110,18 @@ export class PolygonDrawer {
       }
     }
   }
-
-  static #isPointOnLine(pointer) {
-    this.#linesArray.forEach((element) => {
-      let compare = (a, b) => {
-        if (a > b) return 1;
-        if (a === b) return 0;
-        if (a < b) return -1;
+  static #checkPointOnLine(pointer) {
+    if(!this.#intersectionLine) {
+      for(let i = 0; i < this.#linesArray.length; i++) {
+        if(this.#linesArray[i].isPointOnLine(pointer.x, pointer.y)) {
+          this.#intersectionLine = this.#linesArray[i];
+          break;
+        }
       }
-      let coordsX = element.getCoordsX().sort(compare);
-      let coordsY = element.getCoordsY().sort(compare);
-      if(pointer.x >= coordsX[0] && pointer.x <= coordsX[1] && pointer.y >= coordsY[0] && pointer.y <= coordsY[1]) {
-      }
-    })
+      return;
+    }
+    this.#intersectionLine.intersect(this.#activeLineFromEndPoint);
+    this.#intersectionLine.intersect(this.#activeLineFromStartPoint);
   }
 
   static #pseudoScalar(vector1X, vector1Y, vector2X, vector2Y) {
