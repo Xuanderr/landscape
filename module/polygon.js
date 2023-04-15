@@ -110,10 +110,10 @@ export class PolygonDrawer {
       }
     }
   }
-  static #checkPointOnLine(pointer) {
+  static #checkIntersection(pointer) {
     if(!this.#intersectionLine) {
       for(let i = 0; i < this.#linesArray.length; i++) {
-        if(this.#linesArray[i].isPointOnLine(pointer.x, pointer.y)) {
+        if(this.#pointOnLine(this.#linesArray[i], pointer.x, pointer.y)) {
           this.#intersectionLine = this.#linesArray[i];
           break;
         }
@@ -128,6 +128,31 @@ export class PolygonDrawer {
     return vector1X * vector2Y - vector2X * vector1Y
   }
 
+  static #projectionIntersections(start1, start2, end1, end2) {
+    return Math.max(start1, start2) <= Math.min(end1, end2);
+  }
+  static #pointOnLine(line, pointX, pointY) {
+    if(!this.#projectionIntersections(line.getStartX(), pointX, line.getEndX(), pointX)) {
+      return false;
+    }
+    if(!this.#projectionIntersections(line. getStartY(), pointY, line.getEndY(), pointY)) {
+      return false;
+    }
+    let pointAsVector = [];
+    pointAsVector.push(pointX - line.getCoords()[0])
+    pointAsVector.push(pointY - line.getCoords()[1])
+    return this.#pseudoScalar(line.getVector()[0], line.getVector()[1], pointAsVector[0], pointAsVector[1]) === 0;
+  }
+
+  static #lineIntersection(line1, line2) {
+    if(!this.#projectionIntersections(line1.getStartX(), line2.getStartX(), line1.getEndX(), line2.getEndX())) {
+      return false;
+    }
+    if(!this.#projectionIntersections(line1.getStartY(), line2.getStartY(), line1.getEndY(), line2.getEndY())) {
+      return false;
+    }
+    let d1 = this.#pseudoScalar(line1.getVector()[0], line1.getVector()[1], )
+  }
   static addPoint(options) {
     if(this.#circleArray.length !== 0 &&
         this.#circleArray[this.#circleArray.length-1]

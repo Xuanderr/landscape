@@ -32,45 +32,25 @@ export class LabeledLine {
     #isLabelLineOnCanvas = false;
     #segmentLength = 0;
     #fi = 0;
-    #asVector = {
-        x: 0,
-        y: 0
-    }
-    #coords  = {
-        x1: undefined,
-        y1: undefined,
-        x2: undefined,
-        y2: undefined
-    }
-    #startPoint = {
-        x: undefined,
-        y: undefined
-    }
-    #endPoint = {
-        x: undefined,
-        y: undefined
-    }
+    #asVector = []
+
     constructor(coordsArray, label) {
-        this.#coords.x1 = coordsArray[0];
-        this.#coords.y1 = coordsArray[1];
-        this.#coords.x2 = coordsArray[2];
-        this.#coords.y2 = coordsArray[3];
         this.#coordinates = coordsArray;
         this.#innerOptionsSetter();
         this.#textArea = new fabric.Text(label, this.#textOptions);
         this.#singleLine.set({
-            x1: this.#coords.x1,
-            y1: this.#coords.y1,
-            x2: this.#coords.x2,
-            y2: this.#coords.y2
+            x1: this.#coordinates[0],
+            y1: this.#coordinates[1],
+            x2: this.#coordinates[2],
+            y2: this.#coordinates[3]
         });
         this.#lineBefore.set({
-            x1: this.#coords.x1,
-            y1: this.#coords.y1,
+            x1: this.#coordinates[0],
+            y1: this.#coordinates[1],
         });
         this.#lineAfter.set({
-            x2: this.#coords.x2,
-            y2: this.#coords.y2
+            x2: this.#coordinates[2],
+            y2: this.#coordinates[3]
         });
         if (this.#isShowLabel()) {
             let endBefore =  this.#getSmallRadiusPosition();
@@ -92,8 +72,8 @@ export class LabeledLine {
         }
     }
     lineTo(x2, y2, canvas) {
-        this.#coords.x2 = x2;
-        this.#coords.y2 = y2;
+        this.#coordinates[2] = x2;
+        this.#coordinates[3] = y2;
         this.#innerOptionsSetter();
         if(this.#isShowLabel()) {
             this.#removeSingleLine(canvas);
@@ -112,8 +92,8 @@ export class LabeledLine {
             this.#lineAfter.set({
                 x1: startAfter.pointX,
                 y1: startAfter.pointY,
-                x2: this.#coords.x2,
-                y2: this.#coords.y2
+                x2: this.#coordinates[2],
+                y2: this.#coordinates[3]
             });
             if (!this.#isLabelLineOnCanvas) {
                 this.#addToCanvas(canvas, true);
@@ -176,21 +156,31 @@ export class LabeledLine {
             stroke: '#999999'
         });
     }
-    // getCoords() {
-    //     return this.#coordinates;
-    // }
-    // getCoordsX() {
-    //     let res = []
-    //     res.push(this.#coordinates[0], this.#coordinates[2]);
-    //     return res;
-    // }
-    // getCoordsY() {
-    //     let res = []
-    //     res.push(this.#coordinates[1], this.#coordinates[3]);
-    //     return res;
-    // }
+    toRedLine() {
+        this.#lineBefore.set({
+            stroke: 'red'
+        });
+        this.#lineAfter.set({
+            stroke: 'red'
+        });
+    }
+    getCoords() {
+        return this.#coordinates;
+    }
     getVector() {
         return this.#asVector;
+    }
+    getStartX() {
+        return Math.min(this.#coordinates[0], this.#coordinates[2])
+    }
+    getEndX() {
+        return Math.max(this.#coordinates[0], this.#coordinates[2])
+    }
+    getStartY() {
+        return Math.min(this.#coordinates[1], this.#coordinates[3])
+    }
+    getEndY() {
+        return Math.max(this.#coordinates[1], this.#coordinates[3])
     }
     addEventListener(event) {
         this.#lineBefore.on(event, () => {
@@ -225,34 +215,34 @@ export class LabeledLine {
         return vector1X * vector2Y - vector2X * vector1Y
     }
     #innerOptionsSetter() {
-        this.#asVector.x = this.#coordinates[2] -  this.#coordinates[0];
-        this.#asVector.y = this.#coordinates[3] -  this.#coordinates[1];
+        this.#asVector.push(this.#coordinates[2] -  this.#coordinates[0]);
+        this.#asVector.push(this.#coordinates[3] -  this.#coordinates[1]);
         this.#segmentLength = this.#getSegmentLength();
         this.#fi = this.#angle();
     }
     #getSegmentCentre() {
-        let pointX = (this.#coords.x1 + this.#coords.x2) / 2,
-            pointY = (this.#coords.y1 + this.#coords.y2) / 2
+        let pointX = (this.#coordinates[0] + this.#coordinates[2]) / 2,
+            pointY = (this.#coordinates[1] + this.#coordinates[3]) / 2
         return {pointX, pointY}
     }
     #getSegmentLength() {
-        return Math.sqrt((this.#coords.x2 - this.#coords.x1)**2 + (this.#coords.y2 - this.#coords.y1)**2)
+        return Math.sqrt((this.#coordinates[2] - this.#coordinates[0])**2 + (this.#coordinates[3] - this.#coordinates[1])**2)
     }
     #getSmallRadiusPosition() {
         let radius = this.#segmentLength / 2 - this.#textArea.width / 2,
-            pointX = this.#coords.x1 + radius * Math.cos(this.#fi),
-            pointY = this.#coords.y1 + radius * Math.sin(this.#fi);
+            pointX = this.#coordinates[0] + radius * Math.cos(this.#fi),
+            pointY = this.#coordinates[1] + radius * Math.sin(this.#fi);
         return {pointX, pointY};
     }
     #getBigRadiusPosition() {
         let radius = this.#segmentLength / 2 + this.#textArea.width / 2,
-            pointX = this.#coords.x1 + radius * Math.cos(this.#fi),
-            pointY = this.#coords.y1 + radius * Math.sin(this.#fi);
+            pointX = this.#coordinates[0] + radius * Math.cos(this.#fi),
+            pointY = this.#coordinates[1] + radius * Math.sin(this.#fi);
         return {pointX, pointY};
     }
     #angle() {
-        let dy = this.#coords.y2 - this.#coords.y1;
-        let dx = this.#coords.x2 - this.#coords.x1;
+        let dy = this.#coordinates[3] - this.#coordinates[1];
+        let dx = this.#coordinates[2] - this.#coordinates[0];
         return Math.atan2(dy, dx);
     }
     #isShowLabel() {
