@@ -2,7 +2,6 @@ export class LabeledLine {
     #lineOptions = {
         strokeDashArray: [5, 5],
         strokeWidth: 2,
-        stroke: "#999999",
         originX: "center",
         originY: "center",
         selectable: false,
@@ -32,29 +31,34 @@ export class LabeledLine {
     #isLabelLineOnCanvas = false;
     #segmentLength = 0;
     #fi = 0;
-    #asVector = []
+    #color = '#999999'
 
     constructor(coordsArray, label) {
         this.#coordinates = coordsArray;
-        this.#innerOptionsSetter();
+        this.#segmentLength = this.#getSegmentLength();
+        this.#fi = this.#angle();
         this.#textArea = new fabric.Text(label, this.#textOptions);
         this.#singleLine.set({
+            stroke: this.#color,
             x1: this.#coordinates[0],
             y1: this.#coordinates[1],
             x2: this.#coordinates[2],
             y2: this.#coordinates[3]
         });
         this.#lineBefore.set({
+            stroke: this.#color,
             x1: this.#coordinates[0],
             y1: this.#coordinates[1],
         });
         this.#lineAfter.set({
+            stroke: this.#color,
             x2: this.#coordinates[2],
             y2: this.#coordinates[3]
         });
         if (this.#isShowLabel()) {
             let endBefore =  this.#getSmallRadiusPosition();
             this.#lineBefore.set({
+                stroke: this.#color,
                 x2: endBefore.pointX,
                 y2: endBefore.pointY
             });
@@ -66,6 +70,7 @@ export class LabeledLine {
             })
             let startAfter = this.#getBigRadiusPosition();
             this.#lineAfter.set({
+                stroke: this.#color,
                 x1: startAfter.pointX,
                 y1: startAfter.pointY
             });
@@ -74,11 +79,13 @@ export class LabeledLine {
     lineTo(x2, y2, canvas) {
         this.#coordinates[2] = x2;
         this.#coordinates[3] = y2;
-        this.#innerOptionsSetter();
+        this.#segmentLength = this.#getSegmentLength();
+        this.#fi = this.#angle();
         if(this.#isShowLabel()) {
             this.#removeSingleLine(canvas);
             let endBefore =  this.#getSmallRadiusPosition();
             this.#lineBefore.set({
+                stroke: this.#color,
                 x2: endBefore.pointX,
                 y2: endBefore.pointY
             });
@@ -90,6 +97,7 @@ export class LabeledLine {
             })
             let startAfter = this.#getBigRadiusPosition();
             this.#lineAfter.set({
+                stroke: this.#color,
                 x1: startAfter.pointX,
                 y1: startAfter.pointY,
                 x2: this.#coordinates[2],
@@ -103,6 +111,7 @@ export class LabeledLine {
         }
         this.#removeLabelLine(canvas);
         this.#singleLine.set({
+            stroke: this.#color,
             x2: x2,
             y2: y2
         });
@@ -120,55 +129,32 @@ export class LabeledLine {
         canvas.add(this.#singleLine);
         this.#isSingleLineOnCanvas = true;
     }
-    isPointOnLine(x, y) {
-        if(x >= Math.min(this.#coordinates[0], this.#coordinates[2]) &&
-           x <= Math.max(this.#coordinates[0], this.#coordinates[2]) &&
-            y >= Math.min(this.#coordinates[1], this.#coordinates[3]) &&
-            y <= Math.max(this.#coordinates[1], this.#coordinates[3]))
-        {
-            let vectorToPoint = {
-                x: x - this.#coordinates[0],
-                y: y - this.#coordinates[1]
-            };
-            return this.#pseudoScalar(this.#asVector.x, this.#asVector.y, vectorToPoint.x, vectorToPoint.y) === 0;
-        }
-        return false;
-    }
-    intersect(line) {
-    }
-
     getFI() {
         return this.#fi;
     }
     toGreenLine() {
-        this.#lineBefore.set({
-            stroke: 'green'
-        });
-        this.#lineAfter.set({
-            stroke: 'green'
-        });
+        this.#color = 'green';
     }
     toGrayLine() {
-        this.#lineBefore.set({
-            stroke: '#999999'
-        });
-        this.#lineAfter.set({
-            stroke: '#999999'
-        });
+        this.#color = '#999999';
     }
     toRedLine() {
-        this.#lineBefore.set({
-            stroke: 'red'
-        });
-        this.#lineAfter.set({
-            stroke: 'red'
-        });
+        this.#color = 'red';
     }
     getCoords() {
         return this.#coordinates;
     }
     getVector() {
-        return this.#asVector;
+        return [this.#coordinates[2] - this.#coordinates[0], this.#coordinates[3] - this.#coordinates[1]];
+    }
+    getVectors(line) {
+        let lineCoords = line.getCoords();
+        let result = [];
+        result.push(lineCoords[0] - this.#coordinates[0]);
+        result.push(lineCoords[1] - this.#coordinates[1]);
+        result.push(lineCoords[2] - this.#coordinates[0]);
+        result.push(lineCoords[3] - this.#coordinates[1]);
+        return result;
     }
     getStartX() {
         return Math.min(this.#coordinates[0], this.#coordinates[2])
@@ -195,30 +181,8 @@ export class LabeledLine {
             console.log('lineAfter')
         });
     }
-    setStartPoint() {
-        let minX = Math.min(this.#coords.x1, this.#coords.x2);
-        if(minX === this.#coords.x1) {
-            return {x: this.#coords.x1, y: this.#coords.y1}
-        } else {
-            return {x: this.#coords.x2, y: this.#coords.y2}
-        }
-    }
-    setEndPoint() {
-        let maxX = Math.max(this.#coords.x1, this.#coords.x2);
-        if(maxX === this.#coords.x1) {
-            return {x: this.#coords.x1, y: this.#coords.y1}
-        } else {
-            return {x: this.#coords.x2, y: this.#coords.y2}
-        }
-    }
     #pseudoScalar(vector1X, vector1Y, vector2X, vector2Y) {
         return vector1X * vector2Y - vector2X * vector1Y
-    }
-    #innerOptionsSetter() {
-        this.#asVector.push(this.#coordinates[2] -  this.#coordinates[0]);
-        this.#asVector.push(this.#coordinates[3] -  this.#coordinates[1]);
-        this.#segmentLength = this.#getSegmentLength();
-        this.#fi = this.#angle();
     }
     #getSegmentCentre() {
         let pointX = (this.#coordinates[0] + this.#coordinates[2]) / 2,

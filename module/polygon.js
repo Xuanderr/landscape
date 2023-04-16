@@ -110,49 +110,76 @@ export class PolygonDrawer {
       }
     }
   }
-  static #checkIntersection(pointer) {
-    if(!this.#intersectionLine) {
-      for(let i = 0; i < this.#linesArray.length; i++) {
-        if(this.#pointOnLine(this.#linesArray[i], pointer.x, pointer.y)) {
-          this.#intersectionLine = this.#linesArray[i];
-          break;
-        }
-      }
-      return;
-    }
-    this.#intersectionLine.intersect(this.#activeLineFromEndPoint);
-    this.#intersectionLine.intersect(this.#activeLineFromStartPoint);
-  }
-
-  static #pseudoScalar(vector1X, vector1Y, vector2X, vector2Y) {
-    return vector1X * vector2Y - vector2X * vector1Y
-  }
-
-  static #projectionIntersections(start1, start2, end1, end2) {
-    return Math.max(start1, start2) <= Math.min(end1, end2);
-  }
-  static #pointOnLine(line, pointX, pointY) {
-    if(!this.#projectionIntersections(line.getStartX(), pointX, line.getEndX(), pointX)) {
-      return false;
-    }
-    if(!this.#projectionIntersections(line. getStartY(), pointY, line.getEndY(), pointY)) {
-      return false;
-    }
-    let pointAsVector = [];
-    pointAsVector.push(pointX - line.getCoords()[0])
-    pointAsVector.push(pointY - line.getCoords()[1])
-    return this.#pseudoScalar(line.getVector()[0], line.getVector()[1], pointAsVector[0], pointAsVector[1]) === 0;
-  }
-
-  static #lineIntersection(line1, line2) {
-    if(!this.#projectionIntersections(line1.getStartX(), line2.getStartX(), line1.getEndX(), line2.getEndX())) {
-      return false;
-    }
-    if(!this.#projectionIntersections(line1.getStartY(), line2.getStartY(), line1.getEndY(), line2.getEndY())) {
-      return false;
-    }
-    let d1 = this.#pseudoScalar(line1.getVector()[0], line1.getVector()[1], )
-  }
+  // static #intersectionCheck(pointer) {
+  //   if(!this.#intersectionLine) {
+  //     console.log(this.#linesArray.length)
+  //     for(let i = 0; i < this.#linesArray.length; i++) {
+  //       if(this.#pointOnLine(this.#linesArray[i], pointer.x, pointer.y)) {
+  //         this.#intersectionLine = this.#linesArray[i];
+  //         break;
+  //       }
+  //     }
+  //     console.log('kek1')
+  //     return;
+  //   }
+  //   console.log('kek')
+  //   let isRedLineStartPoint = false;
+  //   let isRedLineEndPoint = false;
+  //   if (this.#lineIntersection(this.#intersectionLine, this.#activeLineFromEndPoint)) {
+  //     this.#activeLineFromEndPoint.toRedLine();
+  //     isRedLineEndPoint = true;
+  //   }
+  //   if(this.#activeLineFromStartPoint) {
+  //     if (this.#lineIntersection(this.#intersectionLine, this.#activeLineFromStartPoint)) {
+  //       this.#activeLineFromStartPoint.toRedLine();
+  //       isRedLineStartPoint = true;
+  //     }
+  //   }
+  //   if(!isRedLineStartPoint && !isRedLineEndPoint) {
+  //     this.#intersectionLine = null;
+  //   }
+  // }
+ //
+  // static #pseudoScalar(vector1X, vector1Y, vector2X, vector2Y) {
+  //   return vector1X * vector2Y - vector2X * vector1Y
+  // }
+  //
+  // static #projectionIntersections(start1, start2, end1, end2) {
+  //   return Math.max(start1, start2) <= Math.min(end1, end2);
+  // }
+  // static #pointOnLine(line, pointX, pointY) {
+  //   if(!this.#projectionIntersections(line.getStartX(), pointX, line.getEndX(), pointX)) {
+  //     return false;
+  //   }
+  //   if(!this.#projectionIntersections(line. getStartY(), pointY, line.getEndY(), pointY)) {
+  //     return false;
+  //   }
+  //   let pointAsVector = [];
+  //   pointAsVector.push(pointX - line.getCoords()[0])
+  //   pointAsVector.push(pointY - line.getCoords()[1])
+  //   return this.#pseudoScalar(line.getVector()[0], line.getVector()[1], pointAsVector[0], pointAsVector[1]) === 0;
+  // }
+  //
+  // static #lineIntersection(line1, line2) {
+  //   if(!this.#projectionIntersections(line1.getStartX(), line2.getStartX(), line1.getEndX(), line2.getEndX())) {
+  //     return false;
+  //   }
+  //   if(!this.#projectionIntersections(line1.getStartY(), line2.getStartY(), line1.getEndY(), line2.getEndY())) {
+  //     return false;
+  //   }
+  //   let ab = line1.getVector();
+  //   let AcAd = line1.getVectors(line2);
+  //   let cd = line2.getVector();
+  //   let CaCb= line2.getVectors(line1);
+  //
+  //   let d1 = this.#pseudoScalar(ab[0], ab[1], AcAd[0], AcAd[1]);
+  //   let d2 = this.#pseudoScalar(ab[0], ab[1], AcAd[2], AcAd[3]);
+  //   let d3 = this.#pseudoScalar(cd[0], cd[1], CaCb[0], CaCb[1]);
+  //   let d4 = this.#pseudoScalar(cd[0], cd[1], CaCb[2], CaCb[3]);
+  //
+  //  return (((d1 <= 0 && d2 >= 0) || (d1 >= 0 && d2 <= 0)) &&
+  //       ((d3 <= 0 && d4 >= 0) || (d3 >= 0 && d4 <= 0)))
+  // }
   static addPoint(options) {
     if(this.#circleArray.length !== 0 &&
         this.#circleArray[this.#circleArray.length-1]
@@ -170,18 +197,21 @@ export class PolygonDrawer {
       left: this.#currentPoint.x,
       top: this.#currentPoint.y,
     });
-    if (this.#circleArray.length === 0)
+    this.#circleArray.push(circle);
     this.#pointsArray.push(new fabric.Point(this.#currentPoint.x, this.#currentPoint.y));
     if(this.#activeLineFromEndPoint) {
       this.#activeLineFromEndPoint.toGrayLine();
     }
+
+    if(this.#activeLineFromEndPoint) {
+      this.#linesArray.push(this.#activeLineFromEndPoint);
+    }
     this.#activeLineFromEndPoint = new LabeledLine(
         [this.#currentPoint.x, this.#currentPoint.y, this.#currentPoint.x, this.#currentPoint.y], '')
-    this.#circleArray.push(circle);
+
     if (!this.#activeLineFromStartPoint && this.#circleArray.length > 1) {
       let x = this.#pointsArray[0].x;
       let y = this.#pointsArray[0].y;
-      this.#activeLineFromStartPoint = new fabric.Line([x, y, x, y], this.#lineOptions);
       this.#activeLineFromStartPoint = new LabeledLine([x, y, x, y], '')
       this.#activeLineFromStartPoint.add(this.#canvas);
     }
@@ -190,13 +220,11 @@ export class PolygonDrawer {
     }
 
     let polygon = new fabric.Polygon(this.#pointsArray, this.#polygonOptions);
-
     if (this.#activeShape) {
       this.#canvas.remove(this.#activeShape);
     }
     this.#activeShape = polygon;
 
-    this.#linesArray.push(this.#activeLineFromEndPoint);
     this.#canvas.add(circle, this.#activeShape);
     this.#activeLineFromEndPoint.add(this.#canvas);
     this.#canvas.renderAll();
@@ -208,7 +236,8 @@ export class PolygonDrawer {
         fill: '#ffffff'
       });
       let pointer = this.#canvas.getPointer(options.e, false);
-      this.#pointCheck(pointer)
+      this.#pointCheck(pointer);
+      //this.#intersectionCheck(pointer);
       if (this.#activeShape) {
         let points = this.#activeShape.get("points");
         points[this.#circleArray.length] = new fabric.Point(this.#currentPoint.x, this.#currentPoint.y);
@@ -259,13 +288,10 @@ export class PolygonDrawer {
     console.log(this.#canvas.getObjects());
     this.#clearDrawerOptions();
   }
-
-
   static eventSetter() {
     this.#canvas.on("mouse:down", this.addPoint.bind(this));
     this.#canvas.on("mouse:move", this.addLine.bind(this));
   }
-
   static eventRemover() {
     this.#canvas.off("mouse:down");
     this.#canvas.off("mouse:move");
