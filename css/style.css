@@ -49,8 +49,10 @@ body {
   height: 50px;
   margin-right: 10px;
 }
-#m{
+.sub_menu{
   position: absolute;
+  left: 100%;
+  border: #0d47a1 solid 1px;
   width: 100px;
   height: 100px;
   background-color: rosybrown;
