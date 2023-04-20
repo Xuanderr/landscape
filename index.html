@@ -6,49 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your dream garden</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="img/left-toolbar-icons/style.css" />
   </head>
   <body>
     <div id="header">
+
       <button id="addBtn">Poligon_Toggle</button>
     </div>
     <div id="container">
-      <canvas id="work_space"></canvas>
+      <canvas id="work-space"></canvas>
     </div>
-    <ul id="toolbar">
-      <li class="toolbar_element">
-        <div class="sub_menu">menu</div>
-        <a class="toolbar_link" href="#">
-          <img class="toolbar_icon" src="img/toolbarIcons/soil.png" alt="soil"/>
-          Участки
-        </a>
-      </li>
-      <li class="toolbar_element">
-        <div class="sub_menu">menu</div>
-        <a class="toolbar_link" href="#">
-          <img class="toolbar_icon" src="img/toolbarIcons/trees.png" alt="trees"/>
-          Деревья
-        </a>
-      </li>
-      <li class="toolbar_element">
-        <a class="toolbar_link" href="#">
-          <img class="toolbar_icon" src="img/toolbarIcons/house.png" alt="house"/>
-          Строения
-        </a>
-      </li>
-      <li class="toolbar_element">
-        <a class="toolbar_link" href="#">
-          <img class="toolbar_icon" src="img/toolbarIcons/footpath.png" alt="footpath"/>
-          Дорожки
-        </a>
-      </li>
-      <li class="toolbar_element">
-        <div class="sub_menu">menu</div>
-        <a class="toolbar_link" href="#">
-          <img class="toolbar_icon" src="img/toolbarIcons/pavilion.png" alt="pavilion"/>
-          Прочее
-        </a>
-      </li>
-    </ul>
+    <div class="toolbar-container">
+      <ul class="toolbar">
+        <li class="toolbar-item">
+<!--          <div class="toolbar_sub_menu">menu</div>-->
+          <a class="toolbar-link" href="#">
+              <span class="toolbar-icon icon-crop"></span>
+          </a>
+        </li>
+        <li class="toolbar-item">
+          <ul class="sub-menu">menu</ul>
+          <a class="toolbar-link" href="#">
+              <span class="toolbar-icon icon-house"></span>
+          </a>
+        </li>
+        <li class="toolbar-item">
+          <a class="toolbar-link" href="#">
+              <span class="toolbar-icon icon-plant"></span>
+          </a>
+        </li>
+        <li class="toolbar-item">
+          <a class="toolbar-link" href="#">
+              <span class="toolbar-icon icon-stone-path"></span>
+          </a>
+        </li>
+        <li class="toolbar-item">
+          <ul class="sub-menu">menu</ul>
+          <a class="toolbar-link" href="#">
+              <span class="toolbar-icon icon-plant"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
   </body>
 </html>
 <script type="text/javascript" src="lib/fabric.min.js"></script>

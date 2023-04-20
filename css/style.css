@@ -20,40 +20,56 @@ body {
   height: calc(100vh - 50px);
 }
 
-#toolbar {
-  position: absolute;
-  left: 10px;
+.toolbar-container{
+  position: fixed;
+  left: 1%;
   top: calc(100vh / 5);
-  background-color: cadetblue;
+  border: black solid 2px;
   border-radius: 5px;
-  padding: 10px 0;
+  background-color: whitesmoke;
+}
+
+.toolbar {
+  margin: 0;
+  padding: 0;
   list-style-type: none;
 }
 
-.toolbar_element {
-  margin: 10px;
-  border: 1px solid #000000;
-  border-radius: 10px;
+.toolbar-item {
   position: relative;
+  padding: 10px;
+  cursor: pointer;
 }
-.toolbar_link{
+.toolbar-item:not(:last-of-type) {
+  border-bottom: black solid 2px;
+}
+.toolbar-item:hover {
+  background-color: #394753;
+  transition: all 0.4s ease;
+}
+.toolbar-item:hover a .toolbar-icon {
+  color: whitesmoke;
+  transition: all 0.4s ease;
+}
+.toolbar-item:hover .sub-menu {
+  top: 0;
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 0.4s ease;
+}
+.toolbar-link{
+  font-size: 48px;
+  text-decoration: none;
+  color: black;
   display: flex;
-  align-items: center;
+  vertical-align: center;
 }
-.toolbar_element:hover{
-  background-color: #80d8ff;
-}
-
-.toolbar_icon{
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-}
-.sub_menu{
+.sub-menu{
   position: absolute;
   left: 100%;
+  top: -5px;
+  pointer-events: none;
+  opacity: 0;
   border: #0d47a1 solid 1px;
-  width: 100px;
-  height: 100px;
   background-color: rosybrown;
 }

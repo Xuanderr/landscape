@@ -20,7 +20,7 @@ const setBackground = (url, canvas) => {
 };
 
 const constants = {
-  workSpace: "work_space",
+  workSpace: "work-space",
   container: "container",
   backgroundUrl: "./img/grid.svg",
 };

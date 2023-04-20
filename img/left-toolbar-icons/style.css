@@ -1,0 +1,42 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?cvk0j7');
+  src:  url('fonts/icomoon.eot?cvk0j7#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?cvk0j7') format('truetype'),
+    url('fonts/icomoon.woff?cvk0j7') format('woff'),
+    url('fonts/icomoon.svg?cvk0j7#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-house:before {
+  content: "\e900";
+}
+.icon-plant:before {
+  content: "\e901";
+}
+.icon-japanese-bridge:before {
+  content: "\e902";
+}
+.icon-stone-path:before {
+  content: "\e903";
+}
+.icon-crop:before {
+  content: "\e904";
+}
