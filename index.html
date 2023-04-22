@@ -10,41 +10,47 @@
   </head>
   <body>
     <div id="header">
-
       <button id="addBtn">Poligon_Toggle</button>
     </div>
     <div id="container">
       <canvas id="work-space"></canvas>
     </div>
+    <button id="fixed-button">
+      <span id="fixed-button-icon" class="icon-add"></span>
+    </button>
     <div class="toolbar-container">
       <ul class="toolbar">
         <li class="toolbar-item">
-<!--          <div class="toolbar_sub_menu">menu</div>-->
-          <a class="toolbar-link" href="#">
-              <span class="toolbar-icon icon-crop"></span>
-          </a>
+          <ul class="sub-menu">
+            <li class="sub-menu-item header">
+              <span>Заливка участка</span>
+            </li>
+            <li class="sub-menu-item">
+              <img src="img/plot-background/soil.jpg" alt="soil">
+              <span class="sub-menu-item-ticket">земля</span>
+            </li>
+            <li class="sub-menu-item">
+              <img src="img/plot-background/grass.jpg" alt="grass">
+              <span class="sub-menu-item-ticket">трава</span>
+            </li>
+            <li class="sub-menu-item">
+              <img src="img/plot-background/asphalt.jpg" alt="asphalt">
+              <span class="sub-menu-item-ticket">асфальт</span>
+            </li>
+          </ul>
+          <span class="toolbar-icon icon-crop"></span>
         </li>
         <li class="toolbar-item">
-          <ul class="sub-menu">menu</ul>
-          <a class="toolbar-link" href="#">
-              <span class="toolbar-icon icon-house"></span>
-          </a>
+          <span class="toolbar-icon icon-house"></span>
         </li>
         <li class="toolbar-item">
-          <a class="toolbar-link" href="#">
-              <span class="toolbar-icon icon-plant"></span>
-          </a>
+          <span class="toolbar-icon icon-plant"></span>
         </li>
         <li class="toolbar-item">
-          <a class="toolbar-link" href="#">
-              <span class="toolbar-icon icon-stone-path"></span>
-          </a>
+          <span class="toolbar-icon icon-stone-path"></span>
         </li>
         <li class="toolbar-item">
-          <ul class="sub-menu">menu</ul>
-          <a class="toolbar-link" href="#">
-              <span class="toolbar-icon icon-plant"></span>
-          </a>
+          <span class="toolbar-icon icon-japanese-bridge"></span>
         </li>
       </ul>
     </div>

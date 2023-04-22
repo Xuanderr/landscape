@@ -20,6 +20,41 @@ body {
   height: calc(100vh - 50px);
 }
 
+/*#fixed-button-container {*/
+/*  position: absolute;*/
+/*  bottom: 0;*/
+/*  right: 0;*/
+/*  height: 120px;*/
+/*  width: 120px;*/
+/*  background-color: #0f9d58;*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  pointer-events: none;*/
+/*}*/
+#fixed-button {
+  position: absolute;
+  bottom: 1%;
+  right: 1%;
+  border-radius: 50%;
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  cursor: pointer;
+  background: radial-gradient(circle, rgba(254,254,254,1) 0%, rgba(138,181,34,1) 100%);
+  border: none;
+  min-width: 60px;
+  min-height: 60px;
+}
+#fixed-button:hover {
+  border: black solid 4px;
+  font-size: 34px;
+}
+#fixed-button:hover #fixed-button-icon{
+  font-weight: bold;
+}
+
 .toolbar-container{
   position: fixed;
   left: 1%;
@@ -39,6 +74,9 @@ body {
   position: relative;
   padding: 10px;
   cursor: pointer;
+  font-size: 48px;
+  display: flex;
+  vertical-align: center;
 }
 .toolbar-item:not(:last-of-type) {
   border-bottom: black solid 2px;
@@ -47,29 +85,64 @@ body {
   background-color: #394753;
   transition: all 0.4s ease;
 }
-.toolbar-item:hover a .toolbar-icon {
+.toolbar-item:hover .toolbar-icon {
   color: whitesmoke;
   transition: all 0.4s ease;
 }
 .toolbar-item:hover .sub-menu {
-  top: 0;
   opacity: 1;
   pointer-events: auto;
   transition: all 0.4s ease;
 }
-.toolbar-link{
-  font-size: 48px;
-  text-decoration: none;
-  color: black;
-  display: flex;
-  vertical-align: center;
-}
 .sub-menu{
   position: absolute;
-  left: 100%;
-  top: -5px;
+  left: 103%;
+  top: -25%;
+  padding: 0;
   pointer-events: none;
+  cursor: default;
   opacity: 0;
-  border: #0d47a1 solid 1px;
-  background-color: rosybrown;
+  border: black solid 2px;
+  border-radius: 5px;
+  background-color: whitesmoke;
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 300px;
 }
+.sub-menu .header {
+  flex-basis: 100%;
+}
+.sub-menu .header span{
+  margin: 0 auto;
+  font-size: 24px;
+}
+.sub-menu-item {
+  position: relative;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.sub-menu-item-ticket{
+  background-color: whitesmoke;
+  border-radius: 5px;
+  border: black solid 1px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 16px;
+  padding: 0 2px;
+  opacity: 0;
+  pointer-events: none;
+}
+.sub-menu-item:hover .sub-menu-item-ticket{
+  opacity: 1;
+  transition: all 0.4s ease;
+}
+
+.sub-menu-item img{
+   height: 50px;
+   width: 50px;
+   cursor: pointer;
+ }
