@@ -1,5 +1,7 @@
 import {PolygonDrawer} from "./module/polygon.js";
 
+
+export {canvas, managingInfo};
 const initCanvas = (workSpace, container) => {
   return new fabric.Canvas(workSpace, {
     width: document.getElementById(container).clientWidth,
@@ -8,7 +10,7 @@ const initCanvas = (workSpace, container) => {
   });
 };
 
-const setBackground = (url, canvas) => {
+const setCanvasBackgroundGrid = (url, canvas) => {
   canvas.setBackgroundColor(
     {
       source: url,
@@ -24,6 +26,10 @@ const constants = {
   container: "container",
   backgroundUrl: "./img/grid.svg",
 };
+
+const managingInfo = {
+  polygon: undefined
+}
 
 const projectOptions = {
   currentMode: "default",
@@ -44,6 +50,10 @@ const eventActions = {
     canvas.setWidth(document.getElementById(constants.container).clientWidth);
     canvas.setHeight(document.getElementById(constants.container).clientHeight);
   },
+  polygonBackgroundAction: (object) => {
+
+    document.getElementsByClassName('sub-menu-item-img')
+  }
 };
 const actionSetter = {
   setCanvasZoom: () => {
@@ -52,12 +62,36 @@ const actionSetter = {
   setWindowResize: () => {
     window.addEventListener("resize", eventActions.windowResizeAction);
   },
+  setPolygonBackground: () => {
+    Array.from(document.getElementsByClassName('sub-menu-item-img')).forEach((element) => {
+      element.addEventListener('click', (event) => {
+        let str = `img/plot-background/${event.currentTarget.alt}.png`;
+        console.log(event.currentTarget.alt);
+        loadPattern(str)
+      })
+    })
+  }
 };
 
+const loadPattern = (url) => {
+  if(managingInfo.polygon) {
+    fabric.util.loadImage(url, function (img) {
+      managingInfo.polygon.set({
+        fill: new fabric.Pattern({source: img }),
+        opacity: 1
+      }
+      );
+      canvas.renderAll();
+    });
+  }
+
+}
+
 const canvas = initCanvas(constants.workSpace, constants.container);
-setBackground(constants.backgroundUrl, canvas);
+setCanvasBackgroundGrid(constants.backgroundUrl, canvas);
 actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
+actionSetter.setPolygonBackground();
 
 // let circle = new fabric.Circle({
 //   left: 300,
@@ -100,15 +134,16 @@ actionSetter.setCanvasZoom();
 // canvas.add(line, rect);
 // console.log(line);
 // console.log(rect);
-
+console.log(document.getElementsByClassName('sub-menu-item-img')[0].alt)
 const btn = document.getElementById("addBtn");
 btn.addEventListener("click", () => {
   if (projectOptions.currentMode === "default") {
     projectOptions.currentMode = "polygon";
-    PolygonDrawer.canvasSetter(canvas);
     PolygonDrawer.eventSetter();
   } else {
     projectOptions.currentMode = "default";
     PolygonDrawer.eventRemover();
   }
 });
+
+

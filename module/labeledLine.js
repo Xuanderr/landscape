@@ -136,6 +136,18 @@ export class LabeledLine {
         this.#color = 'green';
     }
     toGrayLine() {
+        if(this.#isLabelLineOnCanvas) {
+            this.#lineBefore.set('stroke', '#999999');
+            this.#lineAfter.set('stroke', '#999999');
+            return;
+        }
+        this.#singleLine.set('stroke', '#999999');
+    }
+    changeColor(flag) {
+        if(flag) {
+            this.#color = 'green';
+            return;
+        }
         this.#color = '#999999';
     }
     toRedLine() {

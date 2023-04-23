@@ -1,6 +1,7 @@
 import {LabeledLine} from './labeledLine.js'
+import {canvas, managingInfo} from "../main.js";
+
 export class PolygonDrawer {
-  static #canvas = null;
   static #pointsArray = [];
   static #linesArray = [];
   static #circleArray = [];
@@ -48,10 +49,6 @@ export class PolygonDrawer {
     evented: false,
   };
 
-  static canvasSetter(canvas) {
-    this.#canvas = canvas;
-  }
-
   static #clearDrawerOptions() {
     this.#activeLineFromEndPoint = null;
     this.#activeLineFromStartPoint = null;
@@ -60,55 +57,59 @@ export class PolygonDrawer {
     this.#linesArray = [];
     this.#pointsArray = [];
   }
-
   static #pointCheck(pointer) {
-    let lastPointLeftBorder = this.#circleArray[this.#circleArray.length -1].left - 5;
-    let lastPointRightBorder = this.#circleArray[this.#circleArray.length -1].left + 5;
-    let lastPointTopBorder = this.#circleArray[this.#circleArray.length -1].top + 5;
-    let lastPointBottomBorder = this.#circleArray[this.#circleArray.length -1].top - 5;
-    let startPointLeftBorder = this.#circleArray[0].left - 5;
-    let startPointRightBorder = this.#circleArray[0].left + 5;
-    let startPointTopBorder = this.#circleArray[0].top + 5;
-    let startPointBottomBorder = this.#circleArray[0].top - 5;
-    let x = pointer.x;
-    let y = pointer.y;
-    if((x >= lastPointLeftBorder && x < lastPointRightBorder) || (y >= lastPointBottomBorder && y < lastPointTopBorder) ||
-        (x >= startPointLeftBorder && x < startPointRightBorder) || (y >= startPointBottomBorder && y < startPointTopBorder)) {
-      if((x >= lastPointLeftBorder && x < lastPointRightBorder) || (y >= lastPointBottomBorder && y < lastPointTopBorder)) {
-        this.#activeLineFromEndPoint.toGreenLine();
-        if(x >= lastPointLeftBorder && x < lastPointRightBorder) {
-          this.#currentPoint.x = lastPointLeftBorder + 5;
-        } else {
-          this.#currentPoint.x = x
-        }
-        if(y >= lastPointBottomBorder && y < lastPointTopBorder) {
-          this.#currentPoint.y = lastPointBottomBorder + 5;
-        } else {
-          this.#currentPoint.y = y
-        }
-      } else {
-        if(this.#activeLineFromStartPoint) {
-          this.#activeLineFromStartPoint.toGreenLine();
-        }
-        if(x >= startPointLeftBorder && x < startPointRightBorder) {
-          this.#currentPoint.x = startPointLeftBorder + 5;
-        } else {
-          this.#currentPoint.x = x
-        }
-        if(y >= startPointBottomBorder && y < startPointTopBorder) {
-          this.#currentPoint.y = startPointBottomBorder + 5;
-        } else {
-          this.#currentPoint.y = y
-        }
-      }
-    } else {
-      this.#currentPoint.x = x
-      this.#currentPoint.y = y
-      this.#activeLineFromEndPoint.toGrayLine();
-      if(this.#activeLineFromStartPoint) {
-        this.#activeLineFromStartPoint.toGrayLine();
-      }
+    let lastPointLeftBorder = this.#circleArray[this.#circleArray.length -1].left - 5,
+        lastPointRightBorder = this.#circleArray[this.#circleArray.length -1].left + 5,
+        lastPointTopBorder = this.#circleArray[this.#circleArray.length -1].top + 5,
+        lastPointBottomBorder = this.#circleArray[this.#circleArray.length -1].top - 5,
+        startPointLeftBorder = this.#circleArray[0].left - 5,
+        startPointRightBorder = this.#circleArray[0].left + 5,
+        startPointTopBorder = this.#circleArray[0].top + 5,
+        startPointBottomBorder = this.#circleArray[0].top - 5;
+    this.#currentPoint.x = pointer.x;
+    this.#currentPoint.y = pointer.y;
+    let endLineGreen = {
+      byX: false,
+      byY: false
     }
+    let startLineGreen = {
+      byX: false,
+      byY: false
+    }
+    // check lineFromEndPoint
+    if(pointer.x >= lastPointLeftBorder && pointer.x <= lastPointRightBorder) {
+      this.#currentPoint.x = lastPointLeftBorder + 5;
+      endLineGreen.byX = true;
+    } else {
+      this.#currentPoint.x = pointer.x
+      endLineGreen.byX = false;
+    }
+    if(pointer.y >= lastPointBottomBorder && pointer.y <= lastPointTopBorder) {
+      this.#currentPoint.y = lastPointBottomBorder + 5;
+      endLineGreen.byY = true;
+    } else {
+      endLineGreen.byY = false;
+    }
+    this.#activeLineFromEndPoint.changeColor(endLineGreen.byX || endLineGreen.byY);
+    // -----------------------
+
+    // check lineFromStartPoint
+    if(pointer.x >= startPointLeftBorder && pointer.x <= startPointRightBorder) {
+      this.#currentPoint.x = startPointLeftBorder + 5;
+      startLineGreen.byX = true;
+    } else {
+      startLineGreen.byX = false;
+    }
+    if(pointer.y >= startPointBottomBorder && pointer.y <= startPointTopBorder) {
+      this.#currentPoint.y = startPointBottomBorder + 5;
+      startLineGreen.byY = true;
+    } else {
+      startLineGreen.byY = false;
+    }
+    if(this.#activeLineFromStartPoint) {
+      this.#activeLineFromStartPoint.changeColor(startLineGreen.byX || startLineGreen.byY);
+    }
+    // -----------------------
   }
   // static #intersectionCheck(pointer) {
   //   if(!this.#intersectionLine) {
@@ -181,6 +182,7 @@ export class PolygonDrawer {
   //       ((d3 <= 0 && d4 >= 0) || (d3 >= 0 && d4 <= 0)))
   // }
   static addPoint(options) {
+
     if(this.#circleArray.length !== 0 &&
         this.#circleArray[this.#circleArray.length-1]
             .containsPoint(new fabric.Point(this.#currentPoint.x,this.#currentPoint.y))) {
@@ -189,7 +191,7 @@ export class PolygonDrawer {
     }
     let circle = new fabric.Circle(this.#circleOptions);
     if (this.#circleArray.length === 0) {
-      let pointer = this.#canvas.getPointer(options.e, false);
+      let pointer = canvas.getPointer(options.e, false);
       this.#currentPoint.x = pointer.x;
       this.#currentPoint.y = pointer.y;
     }
@@ -213,7 +215,7 @@ export class PolygonDrawer {
       let x = this.#pointsArray[0].x;
       let y = this.#pointsArray[0].y;
       this.#activeLineFromStartPoint = new LabeledLine([x, y, x, y], '')
-      this.#activeLineFromStartPoint.add(this.#canvas);
+      this.#activeLineFromStartPoint.add(canvas);
     }
     if(this.#activeLineFromStartPoint) {
       this.#activeLineFromStartPoint.toGrayLine();
@@ -221,13 +223,14 @@ export class PolygonDrawer {
 
     let polygon = new fabric.Polygon(this.#pointsArray, this.#polygonOptions);
     if (this.#activeShape) {
-      this.#canvas.remove(this.#activeShape);
+      canvas.remove(this.#activeShape);
     }
     this.#activeShape = polygon;
-
-    this.#canvas.add(circle, this.#activeShape);
-    this.#activeLineFromEndPoint.add(this.#canvas);
-    this.#canvas.renderAll();
+    canvas.add(circle, this.#activeShape);
+    this.#activeLineFromEndPoint.add(canvas);
+    console.log(this.#circleArray)
+    console.log(this.#pointsArray)
+    canvas.renderAll();
   }
 
   static addLine(options) {
@@ -235,18 +238,18 @@ export class PolygonDrawer {
       this.#circleArray[this.#circleArray.length-1].set({
         fill: '#ffffff'
       });
-      let pointer = this.#canvas.getPointer(options.e, false);
+      let pointer = canvas.getPointer(options.e, false);
       this.#pointCheck(pointer);
       //this.#intersectionCheck(pointer);
       if (this.#activeShape) {
         let points = this.#activeShape.get("points");
         points[this.#circleArray.length] = new fabric.Point(this.#currentPoint.x, this.#currentPoint.y);
       }
-      this.#activeLineFromEndPoint.lineTo(this.#currentPoint.x,this.#currentPoint.y, this.#canvas);
+      this.#activeLineFromEndPoint.lineTo(this.#currentPoint.x,this.#currentPoint.y, canvas);
       if(this.#activeLineFromStartPoint) {
-        this.#activeLineFromStartPoint.lineTo(this.#currentPoint.x,this.#currentPoint.y, this.#canvas);
+        this.#activeLineFromStartPoint.lineTo(this.#currentPoint.x,this.#currentPoint.y, canvas);
       }
-      this.#canvas.renderAll();
+      canvas.renderAll();
     }
   }
 
@@ -258,42 +261,47 @@ export class PolygonDrawer {
       }));
     })
   }
-  static generatePolygon(options) {
-    let pointer = this.#canvas.getPointer(options.e, false);
-    this.#pointsArray.push(new fabric.Point(pointer.x, pointer.y));
+
+  static generatePolygon() {
+    //let pointer = canvas.getPointer(options.e, false);
+    //this.#pointsArray.push(new fabric.Point(pointer.x, pointer.y));
+    let polyArray = [];
     this.#circleArray.forEach((element) => {
-      this.#canvas.remove(element);
+      polyArray.push(new fabric.Point(element.left, element.top))
+      canvas.remove(element);
     });
-    this.#canvas
+    canvas
       .remove(this.#activeLineFromEndPoint)
       .remove(this.#activeLineFromStartPoint)
       .remove(this.#activeShape);
-    let polygon = new fabric.Polygon(this.#pointsArray, {
-      //strokeDashArray: [5, 5],
-      strokeWidth: 4,
-      stroke: "red",
+    console.log(this.#pointsArray)
+    console.log(this.#circleArray)
+    let polygon = new fabric.Polygon(polyArray, {
       opacity: 0.1,
-      //fill: new fabric.Pattern({source: '../img/retina_wood.png'}),
-      //fill: 'red',
       dirty: false,
       objectCaching: false,
       selectable: false,
       evented: false
     });
-    this.#canvas.requestRenderAll();
-    this.#canvas.add(polygon);
-    //this.#canvas.renderAll.bind(this.#canvas)
+    //canvas
+    //.requestRenderAll();
+    managingInfo.polygon = polygon;
+    canvas.add(polygon);
+    //canvas
+    //.renderAll.bind(canvas
+    //)
     //PolygonDrawer.loadPattern('../img/retina_wood.png', polygon);
-    //this.#canvas.renderAll();
-    console.log(this.#canvas.getObjects());
+    //canvas
+    //.renderAll();
+    console.log(canvas.getObjects());
     this.#clearDrawerOptions();
   }
   static eventSetter() {
-    this.#canvas.on("mouse:down", this.addPoint.bind(this));
-    this.#canvas.on("mouse:move", this.addLine.bind(this));
+    canvas.on("mouse:down", this.addPoint.bind(this));
+    canvas.on("mouse:move", this.addLine.bind(this));
   }
   static eventRemover() {
-    this.#canvas.off("mouse:down");
-    this.#canvas.off("mouse:move");
+    canvas.off("mouse:down");
+    canvas.off("mouse:move");
   }
 }
