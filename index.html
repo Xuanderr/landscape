@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your dream garden</title>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="img/left-toolbar-icons/style.css" />
+    <link rel="stylesheet" href="img/icons/style.css" />
   </head>
   <body>
     <div id="header">
@@ -15,10 +15,8 @@
     <div id="container">
       <canvas id="work-space"></canvas>
     </div>
-<!--    <button id="fixed-button">-->
-<!--      <span id="fixed-button-icon" class="icon-add"></span>-->
-<!--    </button>-->
-    <div class="explorer-close">
+    <div class="explorer close">
+      <span class="icon-close to-close"></span>
       <div class="explorer-label">
         <span class="explorer-label-item">E</span>
         <span class="explorer-label-item">X</span>
@@ -34,51 +32,167 @@
       <ul class="toolbar">
         <li class="toolbar-item">
           <ul class="sub-menu">
-            <li class="sub-menu-item header">
-              <span>Заливка участка</span>
+            <li class="sub-menu-row header">
+              <span>Ваш участок</span>
             </li>
-            <li class="sub-menu-item">
-              <img class="sub-menu-item-img" src="img/plot-background/soil.png" alt="soil">
-              <span class="sub-menu-item-ticket">земля</span>
+            <li class="sub-menu-row plot-add">
+              <div class="sub-menu-item">
+                <span class="icon-rectangle"></span>
+                <span class="icon-rectangle-label">Прямоугольный&nbsp;участок</span>
+              </div>
+              <div class="sub-menu-item">
+                <div class="icon-shape"></div>
+                <div class="icon-rectangle-label">Фигурный&nbsp;участок</div>
+              </div>
             </li>
-            <li class="sub-menu-item">
-              <img class="sub-menu-item-img" src="img/plot-background/grass.png" alt="grass">
-              <span class="sub-menu-item-ticket">трава</span>
+            <li class="sub-menu-row">
+              <div class="sub-menu-item main-content">
+                <img  src="img/plot-background/soil.png" alt="soil">
+                <span class="ticket">земля</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/plot-background/grass.png" alt="soil">
+                <span class="ticket">трава</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img  src="img/plot-background/gravel.png" alt="gravel">
+                <span class="ticket">гравий</span>
+              </div>
             </li>
-            <li class="sub-menu-item">
-              <img class="sub-menu-item-img" src="img/plot-background/asphalt.png" alt="asphalt">
-              <span class="sub-menu-item-ticket">асфальт</span>
-            </li>
+
           </ul>
           <span class="toolbar-icon icon-crop"></span>
         </li>
         <li class="toolbar-item">
           <ul class="sub-menu">
-            <li class="sub-menu-item header">
+            <li class="sub-menu-row header">
               <span>Строения</span>
             </li>
-            <li class="sub-menu-item">
-              <img class="sub-menu-item-img" src="img/houses/gray.png" alt="">
-              <span class="sub-menu-item-ticket">земля</span>
+            <li class="sub-menu-row">
+              <div class="sub-menu-item main-content">
+                <img src="img/houses/green-roof.png" alt="green-roof">
+                <span class="ticket">зеленая крыша</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/houses/flat-roof.png" alt="flat-roof">
+                <span class="ticket">плоская крыша</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/houses/gray-roof.png" alt="gray-roof">
+                <span class="ticket">серая крыша</span>
+              </div>
             </li>
-            <li class="sub-menu-item">
-              <img class="sub-menu-item-img" src="img/houses/green.png" alt="grass">
-              <span class="sub-menu-item-ticket">трава</span>
-            </li>
-            <li class="sub-menu-item">
-              <img class="sub-menu-item-img" src="img/houses/red.png" alt="asphalt">
-              <span class="sub-menu-item-ticket">асфальт</span>
+            <li class="sub-menu-row">
+              <div class="sub-menu-item main-content">
+                <img src="img/houses/red-roof.png" alt="red-roof">
+                <span class="ticket">красная крыша</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/houses/four-roof.png" alt="four-roof">
+                <span class="ticket">крыша 4&nbsp;ската</span>
+              </div>
             </li>
           </ul>
           <span class="toolbar-icon icon-house"></span>
         </li>
         <li class="toolbar-item">
+          <ul class="sub-menu">
+            <li class="sub-menu-row header">
+              <span>Растения</span>
+            </li>
+            <li class="sub-menu-row">
+              <div class="sub-menu-item main-content">
+                <img  src="img/plants/tree.png" alt="tree">
+                <span class="ticket">дерево</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/plants/pinetree.png" alt="pinetree">
+                <span class="ticket">хвойное дерево</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/plants/apples.png" alt="apples">
+                <span class="ticket">плодовое дерево</span>
+              </div>
+            </li>
+            <li class="sub-menu-row">
+              <div class="sub-menu-item main-content">
+                <img src="img/plants/berries.png" alt="berries">
+                <span class="ticket">ягодный&nbsp;куст</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img class="contain" src="img/plants/hedge.png" alt="hedge">
+                <span class="ticket">живая изгородь</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img class="contain" src="img/plants/flowers.png" alt="flowers">
+                <span class="ticket">клумба</span>
+              </div>
+            </li>
+          </ul>
           <span class="toolbar-icon icon-plant"></span>
         </li>
         <li class="toolbar-item">
+          <ul class="sub-menu">
+            <li class="sub-menu-row header">
+              <span>Дорожки</span>
+            </li>
+            <li class="sub-menu-row">
+              <div class="sub-menu-item main-content">
+                <img  src="img/footpath/cobblestone.jpg" alt="cobblestone">
+                <span class="ticket">брусчатка</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/footpath/planks.jpg" alt="planks">
+                <span class="ticket">дерево</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/footpath/stone.jpg" alt="stone">
+                <span class="ticket">камень</span>
+              </div>
+            </li>
+            <li class="sub-menu-row">
+              <div class="sub-menu-item main-content">
+                <img src="img/footpath/tiles.jpg" alt="tiles">
+                <span class="ticket">плитка</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/footpath/asphalt.jpg" alt="asphalt">
+                <span class="ticket">асфальт</span>
+              </div>
+            </li>
+          </ul>
           <span class="toolbar-icon icon-stone-path"></span>
         </li>
         <li class="toolbar-item">
+          <ul class="sub-menu">
+            <li class="sub-menu-row header">
+              <span>Разное</span>
+            </li>
+            <li class="sub-menu-row">
+              <div class="sub-menu-item main-content">
+                <img  src="img/any/poolrectangle.png" alt="poolrectangle">
+                <span class="ticket">бассейн</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/any/poolround.png" alt="poolround">
+                <span class="ticket">круглый бассейн</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img class="contain" src="img/any/auto.png" alt="auto">
+                <span class="ticket">автомобиль</span>
+              </div>
+            </li>
+            <li class="sub-menu-row">
+              <div class="sub-menu-item main-content">
+                <img class="contain" src="img/any/gray-auto.png" alt="gray-auto">
+                <span class="ticket">внедорожник</span>
+              </div>
+              <div class="sub-menu-item main-content">
+                <img src="img/any/trash.png" alt="trash">
+                <span class="ticket">мусорный бак</span>
+              </div>
+            </li>
+          </ul>
           <span class="toolbar-icon icon-japanese-bridge"></span>
         </li>
       </ul>

@@ -70,7 +70,25 @@ const actionSetter = {
         loadPattern(str)
       })
     })
-  }
+  },
+  setExplorerOpenClose: () => {
+    let closedExplorer = document.getElementsByClassName("explorer close")[0];
+    let openedToClose = document.getElementsByClassName("icon-close to-close")[0];
+    if(closedExplorer) {
+      closedExplorer.addEventListener('click', () => {
+        closedExplorer.classList.remove('close');
+        closedExplorer.classList.add('open');
+      })
+    }
+    if(openedToClose) {
+      openedToClose.addEventListener('click',() => {
+        let openedExplorer = document.querySelectorAll(".explorer.open");
+        console.log(openedExplorer.classList)
+        openedExplorer.classList.remove('open');
+        openedExplorer.classList.add('close');
+      })
+    }
+  },
 };
 
 const loadPattern = (url) => {
@@ -92,6 +110,7 @@ setCanvasBackgroundGrid(constants.backgroundUrl, canvas);
 actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
 actionSetter.setPolygonBackground();
+actionSetter.setExplorerOpenClose();
 
 // let circle = new fabric.Circle({
 //   left: 300,
@@ -134,7 +153,6 @@ actionSetter.setPolygonBackground();
 // canvas.add(line, rect);
 // console.log(line);
 // console.log(rect);
-console.log(document.getElementsByClassName('sub-menu-item-img')[0].alt)
 const btn = document.getElementById("addBtn");
 btn.addEventListener("click", () => {
   if (projectOptions.currentMode === "default") {
