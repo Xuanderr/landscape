@@ -4,12 +4,12 @@ import {PolygonDrawer} from "./module/polygon.js";
 export {canvas, managingInfo};
 const initCanvas = (workSpace, container) => {
   return new fabric.Canvas(workSpace, {
-    width: document.getElementById(container).clientWidth,
-    height: document.getElementById(container).clientHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
     renderOnAddRemove: true
   });
 };
-
+//document.getElementById(container).clientWidth
 const setCanvasBackgroundGrid = (url, canvas) => {
   canvas.setBackgroundColor(
     {
@@ -47,12 +47,8 @@ const eventActions = {
     options.e.stopPropagation();
   },
   windowResizeAction: () => {
-    canvas.setWidth(document.getElementById(constants.container).clientWidth);
-    canvas.setHeight(document.getElementById(constants.container).clientHeight);
-  },
-  polygonBackgroundAction: (object) => {
-
-    document.getElementsByClassName('sub-menu-item-img')
+    canvas.setWidth(window.innerWidth);
+    canvas.setHeight(window.innerHeight);
   }
 };
 const actionSetter = {
@@ -72,23 +68,23 @@ const actionSetter = {
     })
   },
   setExplorerOpenClose: () => {
-    let closedExplorer = document.getElementsByClassName("explorer close")[0];
-    let openedToClose = document.getElementsByClassName("icon-close to-close")[0];
-    if(closedExplorer) {
-      closedExplorer.addEventListener('click', () => {
-        closedExplorer.classList.remove('close');
-        closedExplorer.classList.add('open');
+    let explorer = document.querySelectorAll(".explorer")[0];
+    if (explorer) {
+      explorer.addEventListener('click', () => {
+        explorer.classList.remove('close');
+        explorer.classList.add('open');
       })
     }
-    if(openedToClose) {
-      openedToClose.addEventListener('click',() => {
-        let openedExplorer = document.querySelectorAll(".explorer.open");
-        console.log(openedExplorer.classList)
-        openedExplorer.classList.remove('open');
-        openedExplorer.classList.add('close');
-      })
-    }
-  },
+    Array.from(explorer.children).forEach((element) => {
+      if (element.classList.contains('icon-close')) {
+        element.addEventListener('click', (event) => {
+          event.stopPropagation();
+          explorer.classList.remove('open');
+          explorer.classList.add('close');
+        })
+      }
+    })
+  }
 };
 
 const loadPattern = (url) => {
