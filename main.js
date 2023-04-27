@@ -32,7 +32,8 @@ const managingInfo = {
 }
 
 const projectOptions = {
-  currentMode: "default",
+  isPolygonToBe: false,
+  currentMode: "default"
 };
 
 const eventActions = {
@@ -46,17 +47,22 @@ const eventActions = {
     options.e.preventDefault();
     options.e.stopPropagation();
   },
-  windowResizeAction: () => {
-    canvas.setWidth(window.innerWidth);
-    canvas.setHeight(window.innerHeight);
-  }
+  addRectPlot: () => {
+
+  },
+  addFigurePlot: () => {
+
+  },
 };
 const actionSetter = {
   setCanvasZoom: () => {
     canvas.on("mouse:wheel", eventActions.canvasZoomAction);
   },
   setWindowResize: () => {
-    window.addEventListener("resize", eventActions.windowResizeAction);
+    window.addEventListener("resize", () => {
+      canvas.setWidth(window.innerWidth);
+      canvas.setHeight(window.innerHeight);
+    });
   },
   setPolygonBackground: () => {
     Array.from(document.getElementsByClassName('sub-menu-item-img')).forEach((element) => {
@@ -84,6 +90,16 @@ const actionSetter = {
         })
       }
     })
+  },
+  setAddPlot: () => {
+    let addRectPlot = document.getElementById('addRectPlotBtn');
+    let addPolyPlot = document.getElementById('addPolyPlotBtn');
+    addRectPlot.addEventListener('click', () => {
+      PolygonDrawer.setMode('rect');
+    });
+    addPolyPlot.addEventListener('click', () => {
+      PolygonDrawer.setMode('poly');
+    });
   }
 };
 
@@ -107,57 +123,17 @@ actionSetter.setWindowResize();
 actionSetter.setCanvasZoom();
 actionSetter.setPolygonBackground();
 actionSetter.setExplorerOpenClose();
+actionSetter.setAddPlot();
 
-// let circle = new fabric.Circle({
-//   left: 300,
-//   top: 300,
-//   radius: 40,
-//   backgroundColor: 'red'
-// });
-// circle.setBackgroundColor( {
-//       source: './img/checkmark.svg',
-//       /*repeat: "repeat", crossOrigin: null*/
-//       crossOrigin: null,
-//     },
-//     canvas.renderAll.bind(circle)
-// )
-// rect.on("moving", () => {
-//   if (rect.intersectsWithObject(line, true, false)) {
-//     console.log("kek");
+// const btn = document.getElementById("addBtn");
+// btn.addEventListener("click", () => {
+//   if (projectOptions.currentMode === "default") {
+//     projectOptions.currentMode = "polygon";
+//     PolygonDrawer.eventSetter();
+//   } else {
+//     projectOptions.currentMode = "default";
+//     PolygonDrawer.eventRemover();
 //   }
-//   console.log("1");
 // });
-// line.on("mouseover", (options) => {
-//   if (
-//     line.containsPoint(new fabric.Point(options.point.x, options.pointer.y))
-//   ) {
-//     console.log("kek");
-//   }
-
-//   // line.set({
-//   //   stroke: "red",
-//   // });
-//   canvas.renderAll();
-// });
-// line.on("mouseout", () => {
-//   console.log("kek1");
-//   line.set({
-//     stroke: "green",
-//   });
-//   canvas.renderAll();
-// });
-// canvas.add(line, rect);
-// console.log(line);
-// console.log(rect);
-const btn = document.getElementById("addBtn");
-btn.addEventListener("click", () => {
-  if (projectOptions.currentMode === "default") {
-    projectOptions.currentMode = "polygon";
-    PolygonDrawer.eventSetter();
-  } else {
-    projectOptions.currentMode = "default";
-    PolygonDrawer.eventRemover();
-  }
-});
 
 

@@ -1,3 +1,4 @@
+import {canvas} from "../main.js";
 export class LabeledLine {
     #lineOptions = {
         strokeDashArray: [5, 5],

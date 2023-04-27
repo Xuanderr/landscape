@@ -8,6 +8,7 @@ export class PolygonDrawer {
   static #activeLineFromEndPoint = null;
   static #activeLineFromStartPoint = null;
   static #activeShape = null;
+  static #drawerMode = undefined;
   static #intersectionLine = null;
   static #currentPoint = {
     x: 0,
@@ -182,7 +183,6 @@ export class PolygonDrawer {
   //       ((d3 <= 0 && d4 >= 0) || (d3 >= 0 && d4 <= 0)))
   // }
   static addPoint(options) {
-
     if(this.#circleArray.length !== 0 &&
         this.#circleArray[this.#circleArray.length-1]
             .containsPoint(new fabric.Point(this.#currentPoint.x,this.#currentPoint.y))) {
@@ -228,11 +228,10 @@ export class PolygonDrawer {
     this.#activeShape = polygon;
     canvas.add(circle, this.#activeShape);
     this.#activeLineFromEndPoint.add(canvas);
-    console.log(this.#circleArray)
-    console.log(this.#pointsArray)
+    // console.log(this.#circleArray)
+    // console.log(this.#pointsArray)
     canvas.renderAll();
   }
-
   static addLine(options) {
     if(this.#circleArray.length !== 0){
       this.#circleArray[this.#circleArray.length-1].set({
@@ -252,16 +251,17 @@ export class PolygonDrawer {
       canvas.renderAll();
     }
   }
-
-  static loadPattern(url, shape) {
-    fabric.util.loadImage(url, function(img) {
-      shape.set('fill',  new fabric.Pattern({
-        source: img,
-        //repeat: 'repeat'
-      }));
-    })
+  static #addRect(options) {
+    let pointer = canvas.getPointer(options.e, false);
+    this.#pointsArray.push(new fabric.Point(pointer.x, pointer.y));
+    this.#activeShape = new fabric.Polygon(this.#pointsArray, this.#polygonOptions);
+    canvas.add(this.#activeShape);
+    canvas.renderAll();
   }
 
+  static #drawRect() {
+
+  }
   static generatePolygon() {
     //let pointer = canvas.getPointer(options.e, false);
     //this.#pointsArray.push(new fabric.Point(pointer.x, pointer.y));
@@ -283,18 +283,23 @@ export class PolygonDrawer {
       selectable: false,
       evented: false
     });
-    //canvas
-    //.requestRenderAll();
     managingInfo.polygon = polygon;
     canvas.add(polygon);
-    //canvas
-    //.renderAll.bind(canvas
-    //)
-    //PolygonDrawer.loadPattern('../img/retina_wood.png', polygon);
-    //canvas
-    //.renderAll();
     console.log(canvas.getObjects());
     this.#clearDrawerOptions();
+  }
+  static setMode(mode) {
+    this.#drawerMode = mode;
+    switch (mode) {
+      case 'rect':
+        canvas.on("mouse:down", this.addPoint.bind(this));
+        canvas.on("mouse:move", this.addLine.bind(this));
+        break;
+      case 'poly':
+        canvas.on("mouse:down", this.addPoint.bind(this));
+        canvas.on("mouse:move", this.addLine.bind(this));
+        break;
+    }
   }
   static eventSetter() {
     canvas.on("mouse:down", this.addPoint.bind(this));
