@@ -18,12 +18,8 @@
     <div class="explorer close">
       <span class="icon-close"></span>
       <div class="explorer-item">
-        <span class="explorer-item-category">Растения: </span>
-        <span class="explorer-item-type">живая изгородь</span>
-      </div>
-      <div class="explorer-item">
-        <span class="explorer-item-category">Строение: </span>
-        <span class="explorer-item-type">красная крыша</span>
+        <span class="explorer-item-info">Строение с 4-скатной крышей</span>
+        <div class="explorer-item-tools"></div>
       </div>
       <div class="explorer-label">
         <span class="explorer-label-item">E</span>
@@ -44,11 +40,11 @@
               <span>Ваш участок</span>
             </li>
             <li class="sub-menu-row plot-add">
-              <div id="addRectPlotBtn" class="sub-menu-item">
+              <div id="addRectPlotBtn" class="sub-menu-item" data-about="Участок">
                 <span class="icon-rectangle"></span>
                 <span class="icon-rectangle-label">Прямоугольный&nbsp;участок</span>
               </div>
-              <div id="addPolyPlotBtn" class="sub-menu-item">
+              <div id="addPolyPlotBtn" class="sub-menu-item" data-about="Участок">
                 <div class="icon-shape"></div>
                 <div class="icon-rectangle-label">Фигурный&nbsp;участок</div>
               </div>
@@ -67,7 +63,6 @@
                 <span class="ticket">гравий</span>
               </div>
             </li>
-
           </ul>
           <span class="toolbar-icon icon-crop"></span>
         </li>
@@ -77,25 +72,25 @@
               <span>Строения</span>
             </li>
             <li class="sub-menu-row">
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Строение с зеленой крышей">
                 <img src="img/houses/green-roof.png" alt="green-roof">
                 <span class="ticket">зеленая крыша</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Строение с плоской крышей">
                 <img src="img/houses/flat-roof.png" alt="flat-roof">
                 <span class="ticket">плоская крыша</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Строение с серой крышей">
                 <img src="img/houses/gray-roof.png" alt="gray-roof">
                 <span class="ticket">серая крыша</span>
               </div>
             </li>
             <li class="sub-menu-row">
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Строение с красной крышей">
                 <img src="img/houses/red-roof.png" alt="red-roof">
                 <span class="ticket">красная крыша</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Строение с 4-скатной крышей">
                 <img src="img/houses/four-roof.png" alt="four-roof">
                 <span class="ticket">крыша 4&nbsp;ската</span>
               </div>
@@ -109,29 +104,29 @@
               <span>Растения</span>
             </li>
             <li class="sub-menu-row">
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Дерево">
                 <img  src="img/plants/tree.png" alt="tree">
                 <span class="ticket">дерево</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Хвойное дерево">
                 <img src="img/plants/pinetree.png" alt="pinetree">
                 <span class="ticket">хвойное дерево</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Плодовое дерево">
                 <img src="img/plants/apples.png" alt="apples">
                 <span class="ticket">плодовое дерево</span>
               </div>
             </li>
             <li class="sub-menu-row">
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Ягодный куст">
                 <img src="img/plants/berries.png" alt="berries">
                 <span class="ticket">ягодный&nbsp;куст</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Живая изгородь">
                 <img class="contain" src="img/plants/hedge.png" alt="hedge">
                 <span class="ticket">живая изгородь</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Клумба">
                 <img class="contain" src="img/plants/flowers.png" alt="flowers">
                 <span class="ticket">клумба</span>
               </div>
@@ -145,25 +140,25 @@
               <span>Дорожки</span>
             </li>
             <li class="sub-menu-row">
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Дорожка из брусчатки">
                 <img  src="img/footpath/cobblestone.jpg" alt="cobblestone">
                 <span class="ticket">брусчатка</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Дорожка из дерева">
                 <img src="img/footpath/planks.jpg" alt="planks">
                 <span class="ticket">дерево</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Дорожка из камня">
                 <img src="img/footpath/stone.jpg" alt="stone">
                 <span class="ticket">камень</span>
               </div>
             </li>
             <li class="sub-menu-row">
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Дорожка из плитки">
                 <img src="img/footpath/tiles.jpg" alt="tiles">
                 <span class="ticket">плитка</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Дорожка из асфальта">
                 <img src="img/footpath/asphalt.jpg" alt="asphalt">
                 <span class="ticket">асфальт</span>
               </div>
@@ -177,25 +172,25 @@
               <span>Разное</span>
             </li>
             <li class="sub-menu-row">
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Бассейн">
                 <img  src="img/any/poolrectangle.png" alt="poolrectangle">
                 <span class="ticket">бассейн</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Круглый бассейн">
                 <img src="img/any/poolround.png" alt="poolround">
                 <span class="ticket">круглый бассейн</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Автомобиль">
                 <img class="contain" src="img/any/auto.png" alt="auto">
                 <span class="ticket">автомобиль</span>
               </div>
             </li>
             <li class="sub-menu-row">
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Внедорожник">
                 <img class="contain" src="img/any/gray-auto.png" alt="gray-auto">
                 <span class="ticket">внедорожник</span>
               </div>
-              <div class="sub-menu-item main-content">
+              <div class="sub-menu-item main-content" data-about="Мусорный бак">
                 <img src="img/any/trash.png" alt="trash">
                 <span class="ticket">мусорный бак</span>
               </div>

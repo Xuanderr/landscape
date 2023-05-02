@@ -73,16 +73,21 @@ body {
   font-family: "Comic Sans MS", sans-serif;
 }
 .explorer-item {
-  /*height: 30px;*/
   padding: 5px;
   background-color: #1de9b6;
   border-radius: 5px;
   margin: 5px;
   position: relative;
 }
-.explorer-item-tools{
-  position: absolute;
-  right: 100%;
+.explorer-item-info {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.explorer-item-tools {
+  border-top: 1px solid black;
+  height: 50px;
 }
 #left-toolbar-container{
   position: fixed;

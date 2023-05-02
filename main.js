@@ -47,12 +47,10 @@ const eventActions = {
     options.e.preventDefault();
     options.e.stopPropagation();
   },
-  addRectPlot: () => {
+  getInfoFromElement: (element) => {
 
-  },
-  addFigurePlot: () => {
+  }
 
-  },
 };
 const actionSetter = {
   setCanvasZoom: () => {
@@ -121,23 +119,27 @@ const loadPattern = (url) => {
 //   <span className="explorer-item-category">Растения: </span>
 //   <span className="explorer-item-type">живая изгородь</span>
 // </div>
-function createNodes() {
-  let explorer = document.getElementsByClassName('explorer')[0];
-  for (let i = 0; i < 20; i++) {
-    let div = document.createElement('div');
-    div.className = 'explorer-item';
-    let span1 = document.createElement('span');
-    span1.className = 'explorer-item-category';
-    span1.textContent = `Категория - ${i}`
-    let span2 = document.createElement('span');
-    span2.className = 'explorer-item-type';
-    span2.textContent = `Тип - ${i}`
-    div.append(span1, span2);
-    explorer.append(div);
-  }
-
-}
-
+// function createNodes() {
+//   let explorer = document.getElementsByClassName('explorer')[0];
+//   for (let i = 0; i < 20; i++) {
+//     let div = document.createElement('div');
+//     div.className = 'explorer-item';
+//     let span1 = document.createElement('span');
+//     span1.className = 'explorer-item-category';
+//     span1.textContent = `Категория - ${i}`
+//     let span2 = document.createElement('span');
+//     span2.className = 'explorer-item-type';
+//     span2.textContent = `Тип - ${i}`
+//     div.append(span1, span2);
+//     explorer.append(div);
+//   }
+// }
+//
+// function f() {
+//   Array.from(document.getElementsByClassName('sub-menu-item')).forEach((element) => {
+//     console.log(element.dataset.about);
+//   })
+// }
 const canvas = initCanvas(constants.workSpace, constants.container);
 setCanvasBackgroundGrid(constants.backgroundUrl, canvas);
 actionSetter.setWindowResize();
@@ -145,8 +147,8 @@ actionSetter.setCanvasZoom();
 actionSetter.setPolygonBackground();
 actionSetter.setExplorerOpenClose();
 actionSetter.setAddPlot();
-createNodes();
-
+// createNodes();
+// f();
 // const btn = document.getElementById("addBtn");
 // btn.addEventListener("click", () => {
 //   if (projectOptions.currentMode === "default") {
