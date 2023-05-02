@@ -114,27 +114,47 @@ const loadPattern = (url) => {
   }
 
 }
+function toggleExplorerItem() {
+  let explorerItem = document.getElementsByClassName('explorer-item')[0];
+  let itemPreview = undefined;
+  let itemTools = undefined;
+  Array.from(explorerItem.children).forEach((element) => {
+    if (element.classList.contains('explorer-item-preview')) {
+      itemPreview = element;
+    }
+    if (element.classList.contains('explorer-item-tool-container')) {
+      itemTools = element;
+    }
+  });
+  itemPreview.addEventListener('click', () => {
+    if(itemTools.classList.contains('none')) {
+      itemTools.classList.remove('none');
+      itemTools.classList.add('block');
+      itemPreview.classList.add('full-text');
+      return;
+    }
+    itemTools.classList.remove('block');
+    itemTools.classList.add('none');
+    itemPreview.classList.remove('full-text');
+  });
+}
 
-// <div className="explorer-item">
-//   <span className="explorer-item-category">Растения: </span>
-//   <span className="explorer-item-type">живая изгородь</span>
-// </div>
-// function createNodes() {
-//   let explorer = document.getElementsByClassName('explorer')[0];
-//   for (let i = 0; i < 20; i++) {
-//     let div = document.createElement('div');
-//     div.className = 'explorer-item';
-//     let span1 = document.createElement('span');
-//     span1.className = 'explorer-item-category';
-//     span1.textContent = `Категория - ${i}`
-//     let span2 = document.createElement('span');
-//     span2.className = 'explorer-item-type';
-//     span2.textContent = `Тип - ${i}`
-//     div.append(span1, span2);
-//     explorer.append(div);
-//   }
-// }
-//
+function createNodes() {
+  let explorer = document.getElementsByClassName('explorer-item-container')[0];
+  for (let i = 0; i < 25; i++) {
+    let div = document.createElement('div');
+    div.className = 'explorer-item';
+    let span1 = document.createElement('span');
+    span1.className = 'explorer-item-category';
+    span1.textContent = `Категория - ${i}`
+    let span2 = document.createElement('span');
+    span2.className = 'explorer-item-type';
+    span2.textContent = `Тип - ${i}`
+    div.append(span1, span2);
+    explorer.append(div);
+  }
+}
+
 // function f() {
 //   Array.from(document.getElementsByClassName('sub-menu-item')).forEach((element) => {
 //     console.log(element.dataset.about);
@@ -147,6 +167,7 @@ actionSetter.setCanvasZoom();
 actionSetter.setPolygonBackground();
 actionSetter.setExplorerOpenClose();
 actionSetter.setAddPlot();
+toggleExplorerItem();
 // createNodes();
 // f();
 // const btn = document.getElementById("addBtn");
