@@ -334,7 +334,7 @@ export class PolygonDrawer {
     // console.log(canvas.getObjects());
     this.#eventRemover();
     this.#clearDrawerOptions();
-    this.#polygonIsDraw = true
+    // this.#polygonIsDraw = true
   }
   static #generateRect() {
     this.#circleArray.forEach((element) => {
@@ -352,7 +352,7 @@ export class PolygonDrawer {
     // console.log(canvas.getObjects());
     this.#clearDrawerOptions();
     this.#eventRemover();
-    this.#polygonIsDraw = true
+    // this.#polygonIsDraw = true
   }
   static setMode(mode) {
     this.#drawerMode = mode;

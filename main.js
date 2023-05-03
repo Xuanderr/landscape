@@ -28,12 +28,14 @@ const constants = {
 };
 
 const managingInfo = {
-  polygon: undefined
+  polygon: undefined,
+  isPolygonToBe: false
 }
 
 const projectOptions = {
-  isPolygonToBe: false,
-  currentMode: "default"
+  currentMode: "default",
+  popup: document.getElementsByClassName('popup')[0],
+  popupMessage: document.getElementById('popupMessage')
 };
 
 const eventActions = {
@@ -63,11 +65,10 @@ const actionSetter = {
     });
   },
   setPolygonBackground: () => {
-    Array.from(document.getElementsByClassName('sub-menu-item-img')).forEach((element) => {
-      element.addEventListener('click', (event) => {
-        let str = `img/plot-background/${event.currentTarget.alt}.png`;
-        console.log(event.currentTarget.alt);
-        loadPattern(str)
+    let container = document.getElementById('subMenuPlotBack');
+    Array.from(container.children).forEach((element) => {
+      element.addEventListener('click', () => {
+        functions.loadPattern(`img/plot-background/${element.firstElementChild.alt}.png`);
       })
     })
   },
@@ -93,26 +94,48 @@ const actionSetter = {
     let addRectPlot = document.getElementById('addRectPlotBtn');
     let addPolyPlot = document.getElementById('addPolyPlotBtn');
     addRectPlot.addEventListener('click', () => {
-      PolygonDrawer.setMode('rect');
+      if(!managingInfo.polygon) {
+        PolygonDrawer.setMode('rect');
+        return;
+      }
+      functions.fireAlert('Участок уже добавлен!');
     });
     addPolyPlot.addEventListener('click', () => {
-      PolygonDrawer.setMode('poly');
+      if (!managingInfo.polygon) {
+        PolygonDrawer.setMode('poly');
+        return;
+      }
+      functions.fireAlert('Участок уже добавлен!');
     });
+  },
+  setPopUpClick: () => {
+    let popupButton = document.getElementById('popupButton');
+    popupButton.addEventListener('click', () => {
+      if (!projectOptions.popup.classList.contains('none')) {
+        projectOptions.popup.classList.add('none');
+      }
+    })
   }
 };
-
-const loadPattern = (url) => {
-  if(managingInfo.polygon) {
-    fabric.util.loadImage(url, function (img) {
-      managingInfo.polygon.set({
-        fill: new fabric.Pattern({source: img }),
-        opacity: 1
-      }
-      );
-      canvas.renderAll();
-    });
+const functions = {
+  fireAlert: (text) => {
+    projectOptions.popupMessage.textContent = text;
+    if (projectOptions.popup.classList.contains('none')) {
+      projectOptions.popup.classList.remove('none');
+    }
+  },
+  loadPattern: (url) => {
+    if(managingInfo.polygon) {
+      fabric.util.loadImage(url, function (img) {
+        managingInfo.polygon.set({
+              fill: new fabric.Pattern({source: img }),
+              opacity: 1
+            }
+        );
+        canvas.renderAll();
+      });
+    }
   }
-
 }
 function toggleExplorerItem() {
   let explorerItem = document.getElementsByClassName('explorer-item')[0];
@@ -154,14 +177,14 @@ function createNodes() {
     explorer.append(div);
   }
 }
-fabric.Image.fromURL('img/any/trash.png', function(oImg) {
-  oImg.set({
-    left:200,
-    top:200
-  })
-  canvas.add(oImg);
-  console.log(oImg);
-});
+// fabric.Image.fromURL('img/plants/flowers.png', function(oImg) {
+//   oImg.set({
+//     left:200,
+//     top:200
+//   })
+//   canvas.add(oImg);
+//   console.log(oImg);
+// });
 // function f() {
 //   let imgInstance = new fabric.Image(imgElement, {
 //     angle: 0,
@@ -183,6 +206,7 @@ actionSetter.setCanvasZoom();
 actionSetter.setPolygonBackground();
 actionSetter.setExplorerOpenClose();
 actionSetter.setAddPlot();
+actionSetter.setPopUpClick();
 toggleExplorerItem();
 // createNodes();
 // f();

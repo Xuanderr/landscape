@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="img/icons/style.css" />
   </head>
   <body>
+  <div class="popup none">
+    <div>
+      <span id="popupMessage">message</span>
+      <button id="popupButton">OK</button>
+    </div>
+  </div>
     <div id="header">
       <button id="addBtn">Poligon_Toggle</button>
     </div>
@@ -61,13 +67,13 @@
                 <div class="plot-label">Фигурный&nbsp;участок</div>
               </div>
             </li>
-            <li class="sub-menu-row">
+            <li id="subMenuPlotBack" class="sub-menu-row">
               <div class="sub-menu-item main-content">
                 <img src="img/plot-background/soil.png" alt="soil">
                 <span class="ticket">земля</span>
               </div>
               <div class="sub-menu-item main-content">
-                <img src="img/plot-background/grass.png" alt="soil">
+                <img src="img/plot-background/grass.png" alt="grass">
                 <span class="ticket">трава</span>
               </div>
               <div class="sub-menu-item main-content">
