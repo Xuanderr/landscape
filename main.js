@@ -154,11 +154,27 @@ function createNodes() {
     explorer.append(div);
   }
 }
-
+fabric.Image.fromURL('img/any/trash.png', function(oImg) {
+  oImg.set({
+    left:200,
+    top:200
+  })
+  canvas.add(oImg);
+  console.log(oImg);
+});
 // function f() {
-//   Array.from(document.getElementsByClassName('sub-menu-item')).forEach((element) => {
-//     console.log(element.dataset.about);
-//   })
+//   let imgInstance = new fabric.Image(imgElement, {
+//     angle: 0,
+//     position: 'absolute',
+//     opacity: 1,
+//     originX: 'left',
+//     originY:'top',
+//     meetOrSlice:'slice',
+//
+//   });
+//   imgInstance.selectable = false;
+//   canvas.add(imgInstance);
+//   canvas.renderAll();
 // }
 const canvas = initCanvas(constants.workSpace, constants.container);
 setCanvasBackgroundGrid(constants.backgroundUrl, canvas);

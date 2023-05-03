@@ -93,12 +93,14 @@ body {
   position: relative;
 }
 .explorer-item-preview{
+  font-size: 15px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
 }
 .explorer-item-info {
+  font-size: 15px;
   display: flex;
   flex-direction: column;
   height: 67px;
