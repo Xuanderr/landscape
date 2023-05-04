@@ -49,9 +49,24 @@ const eventActions = {
     options.e.preventDefault();
     options.e.stopPropagation();
   },
-  getInfoFromElement: (element) => {
+  getItemFromElement: (text, element) => {
+    fabric.Image.fromURL(`img/${text}/${element.firstElementChild.alt}.png`, (img) => {
+      img.set({
+        left:canvas.getCenter().left,
+        top: canvas.getCenter().top
+      });
+      img.scaleToHeight(Number(element.firstElementChild.dataset.height));
+      img.scaleToWidth(Number(element.firstElementChild.dataset.width));
+      if (text === 'plants') {
+        console.log(element.firstElementChild.alt)
+        console.log(element.firstElementChild.dataset.height)
+        console.log(element.firstElementChild.dataset.width)
+        console.log(img)
+      }
+      canvas.add(img);
+    });
+  },
 
-  }
 
 };
 const actionSetter = {
@@ -65,12 +80,14 @@ const actionSetter = {
     });
   },
   setPolygonBackground: () => {
-    let container = document.getElementById('subMenuPlotBack');
-    Array.from(container.children).forEach((element) => {
-      element.addEventListener('click', () => {
-        functions.loadPattern(`img/plot-background/${element.firstElementChild.alt}.png`);
+    Array.from(document.getElementsByClassName('plotBack')).forEach((element) => {
+      Array.from(element.children).forEach((child) => {
+        child.addEventListener('click', () => {
+          functions.loadPattern(`img/plot-background/${child.firstElementChild.alt}.png`);
+        })
       })
     })
+
   },
   setExplorerOpenClose: () => {
     let explorer = document.querySelectorAll(".explorer")[0];
@@ -98,6 +115,7 @@ const actionSetter = {
         PolygonDrawer.setMode('rect');
         return;
       }
+      console.log(managingInfo.polygon);
       functions.fireAlert('Участок уже добавлен!');
     });
     addPolyPlot.addEventListener('click', () => {
@@ -105,6 +123,7 @@ const actionSetter = {
         PolygonDrawer.setMode('poly');
         return;
       }
+      console.log(managingInfo.polygon);
       functions.fireAlert('Участок уже добавлен!');
     });
   },
@@ -115,6 +134,37 @@ const actionSetter = {
         projectOptions.popup.classList.add('none');
       }
     })
+  },
+  setAddItem: () => {
+    //4m x 4m <=> 100px x 100px
+    Array.from(document.getElementsByClassName('houses')).forEach((element) => {
+      Array.from(element.children).forEach((child) => {
+        child.addEventListener('click', () => {
+          eventActions.getItemFromElement('houses',child);
+        });
+      })
+    });
+    Array.from(document.getElementsByClassName('plants')).forEach((element) => {
+      Array.from(element.children).forEach((child) => {
+        child.addEventListener('click', () => {
+          eventActions.getItemFromElement('plants',child);
+        });
+      })
+    });
+    Array.from(document.getElementsByClassName('footpath')).forEach((element) => {
+      Array.from(element.children).forEach((child) => {
+        child.addEventListener('click', () => {
+          eventActions.getItemFromElement('footpath',child);
+        });
+      })
+    });
+    Array.from(document.getElementsByClassName('any')).forEach((element) => {
+      Array.from(element.children).forEach((child) => {
+        child.addEventListener('click', () => {
+          eventActions.getItemFromElement('any',child);
+        });
+      })
+    });
   }
 };
 const functions = {
@@ -207,6 +257,7 @@ actionSetter.setPolygonBackground();
 actionSetter.setExplorerOpenClose();
 actionSetter.setAddPlot();
 actionSetter.setPopUpClick();
+actionSetter.setAddItem();
 toggleExplorerItem();
 // createNodes();
 // f();
