@@ -57,12 +57,12 @@ const eventActions = {
       });
       img.scaleToHeight(Number(element.firstElementChild.dataset.height));
       img.scaleToWidth(Number(element.firstElementChild.dataset.width));
-      if (text === 'plants') {
-        console.log(element.firstElementChild.alt)
-        console.log(element.firstElementChild.dataset.height)
-        console.log(element.firstElementChild.dataset.width)
+      img.on('selected', () => {
         console.log(img)
-      }
+      })
+      img.on('deselected', () => {
+        console.log('img')
+      })
       canvas.add(img);
     });
   },
@@ -188,27 +188,28 @@ const functions = {
   }
 }
 function toggleExplorerItem() {
-  let explorerItem = document.getElementsByClassName('explorer-item')[0];
-  let itemPreview = undefined;
-  let itemTools = undefined;
-  Array.from(explorerItem.children).forEach((element) => {
-    if (element.classList.contains('explorer-item-preview')) {
-      itemPreview = element;
-    }
-    if (element.classList.contains('explorer-item-tool-container')) {
-      itemTools = element;
-    }
-  });
-  itemPreview.addEventListener('click', () => {
-    if(itemTools.classList.contains('none')) {
-      itemTools.classList.remove('none');
-      itemTools.classList.add('block');
-      itemPreview.classList.add('full-text');
-      return;
-    }
-    itemTools.classList.remove('block');
-    itemTools.classList.add('none');
-    itemPreview.classList.remove('full-text');
+  Array.from(document.getElementsByClassName('explorer-item')).forEach((item) => {
+    let itemPreview = undefined;
+    let itemTools = undefined;
+    Array.from(item.children).forEach((element) => {
+      if (element.classList.contains('explorer-item-preview')) {
+        itemPreview = element;
+      }
+      if (element.classList.contains('explorer-item-tool-container')) {
+        itemTools = element;
+      }
+    });
+    itemPreview.addEventListener('click', () => {
+      if(itemTools.classList.contains('none')) {
+        itemTools.classList.remove('none');
+        itemTools.classList.add('block');
+        itemPreview.classList.add('full-text');
+        return;
+      }
+      itemTools.classList.remove('block');
+      itemTools.classList.add('none');
+      itemPreview.classList.remove('full-text');
+    });
   });
 }
 
@@ -259,6 +260,13 @@ actionSetter.setAddPlot();
 actionSetter.setPopUpClick();
 actionSetter.setAddItem();
 toggleExplorerItem();
+// let circle = new fabric.Circle({
+//   radius: 20, fill: 'green', left: 500, top: 300
+// });
+// circle.on('selected', () => {
+//   console.log('kek')
+// })
+// canvas.add(circle)
 // createNodes();
 // f();
 // const btn = document.getElementById("addBtn");

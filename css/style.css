@@ -81,7 +81,7 @@ body {
 .open {
   top: 70px;
   height: calc(100vh - 70px);
-  width: 200px;
+  width: 250px;
   flex-direction: column;
 }
 .icon-close {
@@ -137,10 +137,28 @@ body {
   font-size: 15px;
   display: flex;
   flex-direction: column;
-  height: 67px;
+  height: 72px;
   overflow: auto;
 }
-
+.explorer-item-info-row{
+  margin-bottom: 1px;
+  display: flex;
+  justify-content: space-between;
+}
+.explorer-item-info-row label{
+  display: flex;
+  justify-items: flex-end;
+}
+.explorer-item-info-row input{
+  width: 100px;
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.explorer-item-info-row input:focus{
+  outline: none;
+  border-color: whitesmoke;
+}
 .explorer-item-tool-container {
   border-top: 1px solid black;
   display: flex;
