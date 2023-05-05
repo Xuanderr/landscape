@@ -228,6 +228,12 @@ function createNodes() {
     explorer.append(div);
   }
 }
+function f() {
+  let inp = document.getElementById('input');
+  inp.oninput = () => {
+    console.log(inp.value)
+  }
+}
 // fabric.Image.fromURL('img/plants/flowers.png', function(oImg) {
 //   oImg.set({
 //     left:200,
@@ -260,6 +266,7 @@ actionSetter.setAddPlot();
 actionSetter.setPopUpClick();
 actionSetter.setAddItem();
 toggleExplorerItem();
+f();
 // let circle = new fabric.Circle({
 //   radius: 20, fill: 'green', left: 500, top: 300
 // });

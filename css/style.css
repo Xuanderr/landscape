@@ -137,7 +137,7 @@ body {
   font-size: 15px;
   display: flex;
   flex-direction: column;
-  height: 72px;
+  height: 75px;
   overflow: auto;
 }
 .explorer-item-info-row{
@@ -152,8 +152,10 @@ body {
 .explorer-item-info-row input{
   width: 100px;
   background-color: transparent;
-  border: 1px solid black;
-  border-radius: 5px;
+  border-bottom: 1px solid black;
+  border-top: none;
+  border-left: none;
+  border-right: none;
 }
 .explorer-item-info-row input:focus{
   outline: none;
