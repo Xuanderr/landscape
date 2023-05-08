@@ -73,17 +73,91 @@ body {
 
 .explorer {
   position: absolute;
-  right: 0;
+  right: 1%;
+  top: calc(100vh / 5);
+  height: 300px;
+  width: 200px;
   background-color: whitesmoke;
   display: flex;
-  border-left: rgba(128, 128, 128, 0.5) solid 1px;
+  flex-direction: column;
+  border: black solid 2px;
+  border-radius: 5px;
+  padding: 5px;
 }
-.open {
-  top: 70px;
-  height: calc(100vh - 70px);
-  width: 250px;
+
+.explorer-preview{
+  font-size: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  cursor: pointer;
+  border-bottom: 1px solid black;
+  min-height: 25px;
+}
+.explorer-tools{
+  font-size: 20px;
+  padding-top: 10px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid black;
+}
+.explorer-tools-row{
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 5px;
+}
+.explorer-tools-row span{
+  cursor: pointer;
+}
+.explorer-tools-row span:hover{
+  color: #f4b400;
+  transition: all 0.4s ease;
+}
+.explorer-tools-plot{
+  font-size: 20px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-around;
+}
+.explorer-tools-plot span{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.explorer-tools-plot span:hover{
+  color: #f4b400;
+  transition: all 0.4s ease;
+}
+.explorer-tools-plot-item{
+  display: flex;
   flex-direction: column;
 }
+.explorer-tools-plot-item span{
+  padding: 5px 0;
+  cursor: pointer;
+}
+.explorer-tools-plot-item span:hover{
+  color: #f4b400;
+  transition: all 0.4s ease;
+}
+.explorer-info{
+  font-size: 15px;
+  overflow: auto;
+  height: auto;
+}
+.explorer-info-row{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px 5px 0;
+}
+/*.open {*/
+/*  top: 70px;*/
+/*  height: calc(100vh - 70px);*/
+/*  width: 250px;*/
+/*  flex-direction: column;*/
+/*}*/
 .icon-close {
   position: absolute;
   display: block;
@@ -105,7 +179,6 @@ body {
 .close .icon-close {
   display: none;
 }
-
 .close .explorer-item-container{
   display: none;
 }
@@ -310,6 +383,9 @@ body {
 }
 
 /*Service classes*/
+.pointer{
+  cursor: pointer;
+}
 .contain {
   object-fit: contain;
 }

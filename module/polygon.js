@@ -1,5 +1,5 @@
 import {LabeledLine} from './labeledLine.js'
-import {canvas, managingInfo} from "../main.js";
+import {canvas, managingInfo, functions, actionSetter} from "../main.js";
 
 export class PolygonDrawer {
   static #pointsArray = [];
@@ -25,7 +25,6 @@ export class PolygonDrawer {
     selectable: false,
     hasBorders: false,
     hasControls: false,
-    class: "CirclePoint",
     evented: false,
   };
   static #lineOptions = {
@@ -229,8 +228,6 @@ export class PolygonDrawer {
     this.#activeShape = polygon;
     canvas.add(circle, this.#activeShape);
     this.#activeLineFromEndPoint.add();
-    // console.log(this.#circleArray)
-    // console.log(this.#pointsArray)
     canvas.renderAll();
   }
   static #addLine(options) {
@@ -240,7 +237,6 @@ export class PolygonDrawer {
       });
       let pointer = canvas.getPointer(options.e, false);
       this.#pointCheck(pointer);
-      //this.#intersectionCheck(pointer);
       if (this.#activeShape) {
         let points = this.#activeShape.get("points");
         points[this.#circleArray.length] = new fabric.Point(this.#currentPoint.x, this.#currentPoint.y);
@@ -308,51 +304,121 @@ export class PolygonDrawer {
       canvas.renderAll();
     }
   }
+  static #polySquare(array) {
+    let res = 0;
+    for (let i = 0; i < array.length; i++) {
+      let indexPlus = undefined,
+          indexMinus = undefined;
+      if(i+1 === array.length) {
+        indexPlus = 0;
+      } else {
+        indexPlus = i+1;
+      }
+      if(i-1 < 0) {
+        indexMinus = array.length-1;
+      } else {
+        indexMinus = i-1;
+      }
+      res += array[i].x * (array[indexPlus].y - array[indexMinus].y)
+    }
+    return Math.abs(res * 0.50054583);
+  }
   static #generatePolygon() {
-    //let pointer = canvas.getPointer(options.e, false);
-    //this.#pointsArray.push(new fabric.Point(pointer.x, pointer.y));
+    this.#linesArray.push(this.#activeLineFromStartPoint);
     let polyArray = [];
     this.#circleArray.forEach((element) => {
-      polyArray.push(new fabric.Point(element.left, element.top))
+      polyArray.push(new fabric.Point(element.left, element.top));
       canvas.remove(element);
     });
-    canvas
-      .remove(this.#activeLineFromEndPoint)
-      .remove(this.#activeLineFromStartPoint)
-      .remove(this.#activeShape);
-    // console.log(this.#pointsArray)
-    // console.log(this.#circleArray)
+    this.#linesArray.forEach((element) => {
+      element.remove();
+    });
+    canvas.remove(this.#activeShape);
     let polygon = new fabric.Polygon(polyArray, {
-      opacity: 0.1,
+      fill: 'rgba(0, 0, 0, 0.1)',
       dirty: false,
       objectCaching: false,
-      selectable: false,
-      evented: false
+      hasControls: false,
+      hasBorders: false,
+      lockMovementX: true,
+      lockMovementY: true,
+      square: (this.#polySquare(polyArray) / 625).toFixed(2),
+      labeledLines: this.#linesArray
+    });
+    let info = functions.createPlotInfoBox(polygon, 'p');
+    polygon.set({
+      info: info
+    });
+    polygon.on('selected', () => {
+      if (polygon.info.classList.contains('none')) {
+        polygon.info.classList.remove('none')
+      }
+      polygon.set({
+        stroke: '#000000',
+        strokeWidth: 5
+      });
+    });
+    polygon.on('deselected', () => {
+      if (!polygon.info.classList.contains('none')) {
+        polygon.info.classList.add('none')
+      }
+      polygon.set({
+        stroke: null
+      });
     });
     managingInfo.polygon = polygon;
     canvas.add(polygon);
-    // console.log(canvas.getObjects());
-    this.#eventRemover();
+    canvas.setActiveObject(polygon);
+    this.eventRemover();
     this.#clearDrawerOptions();
-    // this.#polygonIsDraw = true
   }
   static #generateRect() {
     this.#circleArray.forEach((element) => {
       canvas.remove(element);
     });
+    this.#linesArray.forEach((element) => {
+      element.remove();
+    });
+    canvas.remove(this.#activeShape);
+    let square = Number(this.#linesArray[0].getText().split('m')[0]) * Number(this.#linesArray[1].getText().split('m')[0]);
     let rect = new fabric.Polygon(this.#pointsArray, {
-      opacity: 0.1,
+      fill: 'rgba(0, 0, 0, 0.1)',
       dirty: false,
       objectCaching: false,
-      selectable: false,
-      evented: false
+      hasControls: false,
+      hasBorders: false,
+      lockMovementX: true,
+      lockMovementY: true,
+      square: square.toFixed(2),
+      labeledLines: this.#linesArray
+    });
+    let info = functions.createPlotInfoBox(rect, 'r');
+    rect.set({
+      info: info
+    });
+    rect.on('selected', () => {
+      if (rect.info.classList.contains('none')) {
+        rect.info.classList.remove('none')
+      }
+      console.log(rect)
+      rect.set({
+        stroke: '#000000',
+        strokeWidth: 5
+      });
+    });
+    rect.on('deselected', () => {
+      if (!rect.info.classList.contains('none')) {
+        rect.info.classList.add('none')
+      }
+      rect.set({
+        stroke: null
+      });
     });
     managingInfo.polygon = rect;
     canvas.add(rect);
-    // console.log(canvas.getObjects());
+    canvas.setActiveObject(rect);
     this.#clearDrawerOptions();
-    this.#eventRemover();
-    // this.#polygonIsDraw = true
+    this.eventRemover();
   }
   static setMode(mode) {
     this.#drawerMode = mode;
@@ -367,8 +433,9 @@ export class PolygonDrawer {
         break;
     }
   }
-  static #eventRemover() {
+  static eventRemover() {
     canvas.off("mouse:down");
     canvas.off("mouse:move");
+    actionSetter.setCanvasPanning();
   }
 }

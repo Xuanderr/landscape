@@ -209,6 +209,9 @@ export class LabeledLine {
     getCoords() {
         return this.#coordinates;
     }
+    getText() {
+        return this.#textArea.text
+    }
     getVector() {
         return [this.#coordinates[2] - this.#coordinates[0], this.#coordinates[3] - this.#coordinates[1]];
     }

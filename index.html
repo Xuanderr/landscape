@@ -9,60 +9,90 @@
     <link rel="stylesheet" href="img/icons/style.css" />
   </head>
   <body>
-  <div class="popup none">
-    <div>
-      <span id="popupMessage">message</span>
-      <button id="popupButton">OK</button>
+    <div class="popup none">
+      <div>
+        <span id="popupMessage">message</span>
+        <button id="popupButton">OK</button>
+      </div>
     </div>
-  </div>
     <div id="header">
-      <button id="addBtn">Poligon_Toggle</button>
+      <button id="btn">Get plan As image
+      <a></a>
+      </button>
     </div>
     <div id="container">
       <canvas id="work-space"></canvas>
     </div>
-    <div class="explorer close">
-      <span class="icon-close"></span>
-      <div class="explorer-item-container">
-      <div class="explorer-item">
-        <div class="explorer-item-preview">Строение с 4-скатной крышей</div>
-        <div class="explorer-item-tool-container none">
-          <div class="explorer-item-tools">
-            <span class="icon-double-up-chevron"></span>
-            <span class="icon-up-chevron"></span>
-            <span class="icon-down-chevron"></span>
-            <span class="icon-double-down-chevron"></span>
-            <span class="icon-copy"></span>
-            <span class="icon-delete"></span>
-          </div>
-            <div class="explorer-item-info">
-              <div class="explorer-item-info-row">
-                <span class="explorer-item-info-label">1 сторона(м)</span>
-                <input class="explorer-item-info-value" type="number" step="1" min="0" value="110">
-              </div>
-              <div class="explorer-item-info-row">
-                <span class="explorer-item-info-label">1 сторона(м)</span>
-                <input id="input" class="explorer-item-info-value" type="number" step="1" min="0" value="110">
-              </div>
-              <div class="explorer-item-info-row">
-                <span class="explorer-item-info-label">1 сторона(м)</span>
-                <input class="explorer-item-info-value" type="number" step="1" min="0" value="110">
-              </div>
-            </div>
-        </div>
-      </div>
-      </div>
-      <div class="explorer-label">
-        <span class="explorer-label-item">E</span>
-        <span class="explorer-label-item">X</span>
-        <span class="explorer-label-item">P</span>
-        <span class="explorer-label-item">L</span>
-        <span class="explorer-label-item">O</span>
-        <span class="explorer-label-item">R</span>
-        <span class="explorer-label-item">E</span>
-        <span class="explorer-label-item">R</span>
-      </div>
-    </div>
+<!--  <div class="explorer temp">-->
+<!--    <span class="explorer-preview">Строение с 4-скатной крышей</span>-->
+<!--    <div class="explorer-tools-plot">-->
+<!--      <span class="icon-delete"></span>-->
+<!--      <div class="explorer-tools-plot-item">-->
+<!--        <span class="icon-up-chevron"></span>-->
+<!--        <span class="icon-down-chevron"></span>-->
+<!--      </div>-->
+<!--      <div class="explorer-tools-plot-item">-->
+<!--        <span class="icon-double-up-chevron"></span>-->
+<!--        <span class="icon-double-down-chevron"></span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="explorer-info">-->
+<!--      <div class="explorer-info-row">-->
+<!--        <span>Площадь (кв.м)</span>-->
+<!--        <span>11</span>-->
+<!--      </div>-->
+<!--      <div class="explorer-info-row">-->
+<!--        <span>Длина (м)</span>-->
+<!--        <span>1111111</span>-->
+<!--      </div>-->
+<!--      <div class="explorer-info-row">-->
+<!--        <span>Ширина (м)</span>-->
+<!--        <span>112</span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--    <div class="explorer close">-->
+<!--      <span class="icon-close"></span>-->
+<!--      <div class="explorer-item-container">-->
+<!--      <div class="explorer-item">-->
+<!--        <div class="explorer-item-preview">Строение с 4-скатной крышей</div>-->
+<!--        <div class="explorer-item-tool-container none">-->
+<!--          <div class="explorer-item-tools">-->
+<!--            <span class="icon-double-up-chevron"></span>-->
+<!--            <span class="icon-up-chevron"></span>-->
+<!--            <span class="icon-down-chevron"></span>-->
+<!--            <span class="icon-double-down-chevron"></span>-->
+<!--            <span class="icon-copy"></span>-->
+<!--            <span class="icon-delete"></span>-->
+<!--          </div>-->
+<!--            <div class="explorer-item-info">-->
+<!--              <div class="explorer-item-info-row">-->
+<!--                <span class="explorer-item-info-label">1 сторона(м)</span>-->
+<!--                <input class="explorer-item-info-value" type="number" step="1" min="0" value="110">-->
+<!--              </div>-->
+<!--              <div class="explorer-item-info-row">-->
+<!--                <span class="explorer-item-info-label">1 сторона(м)</span>-->
+<!--                <input id="input" class="explorer-item-info-value" type="number" step="1" min="0" value="110">-->
+<!--              </div>-->
+<!--              <div class="explorer-item-info-row">-->
+<!--                <span class="explorer-item-info-label">1 сторона(м)</span>-->
+<!--                <input class="explorer-item-info-value" type="number" step="1" min="0" value="110">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      </div>-->
+<!--      <div class="explorer-label">-->
+<!--        <span class="explorer-label-item">E</span>-->
+<!--        <span class="explorer-label-item">X</span>-->
+<!--        <span class="explorer-label-item">P</span>-->
+<!--        <span class="explorer-label-item">L</span>-->
+<!--        <span class="explorer-label-item">O</span>-->
+<!--        <span class="explorer-label-item">R</span>-->
+<!--        <span class="explorer-label-item">E</span>-->
+<!--        <span class="explorer-label-item">R</span>-->
+<!--      </div>-->
+<!--    </div>-->
     <div id="left-toolbar-container">
       <ul class="toolbar">
         <li class="toolbar-item">
@@ -104,25 +134,25 @@
             </li>
             <li class="sub-menu-row houses">
               <div class="sub-menu-item main-content" data-about="Строение с зеленой крышей">
-                <img src="img/houses/green-roof.png" alt="green-roof" data-width="100" data-height="100">
+                <img src="img/houses/green-roof.png" alt="green-roof" data-width="100" data-height="100" data-square-type = 'r'>
                 <span class="ticket">зеленая крыша</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Строение с плоской крышей">
-                <img src="img/houses/flat-roof.png" alt="flat-roof" data-width="100" data-height="100">
+                <img src="img/houses/flat-roof.png" alt="flat-roof" data-width="100" data-height="100" data-square-type = 'r'>
                 <span class="ticket">плоская крыша</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Строение с серой крышей">
-                <img src="img/houses/gray-roof.png" alt="gray-roof" data-width="100" data-height="100">
+                <img src="img/houses/gray-roof.png" alt="gray-roof" data-width="100" data-height="100" data-square-type = 'r'>
                 <span class="ticket">серая крыша</span>
               </div>
             </li>
             <li class="sub-menu-row houses">
               <div class="sub-menu-item main-content" data-about="Строение с красной крышей">
-                <img src="img/houses/red-roof.png" alt="red-roof" data-width="100" data-height="100">
+                <img src="img/houses/red-roof.png" alt="red-roof" data-width="100" data-height="100" data-square-type = 'r'>
                 <span class="ticket">красная крыша</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Строение с 4-скатной крышей">
-                <img src="img/houses/four-roof.png" alt="four-roof" data-width="100" data-height="100">
+                <img src="img/houses/four-roof.png" alt="four-roof" data-width="100" data-height="100" data-square-type = 'r'>
                 <span class="ticket">крыша 4&nbsp;ската</span>
               </div>
             </li>
@@ -136,29 +166,29 @@
             </li>
             <li class="sub-menu-row plants">
               <div class="sub-menu-item main-content" data-about="Дерево">
-                <img  src="img/plants/tree.png" alt="tree" data-width="50" data-height="50">
+                <img  src="img/plants/tree.png" alt="tree" data-width="50" data-height="50" data-square-type = 'c'>
                 <span class="ticket">дерево</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Хвойное дерево">
-                <img src="img/plants/pinetree.png" alt="pinetree" data-width="50" data-height="50">
+                <img src="img/plants/pinetree.png" alt="pinetree" data-width="50" data-height="50" data-square-type = 'c'>
                 <span class="ticket">хвойное дерево</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Плодовое дерево">
-                <img src="img/plants/apples.png" alt="apples"  data-width="50" data-height="50">
+                <img src="img/plants/apples.png" alt="apples"  data-width="50" data-height="50" data-square-type = 'c'>
                 <span class="ticket">плодовое дерево</span>
               </div>
             </li>
             <li class="sub-menu-row plants">
               <div class="sub-menu-item main-content" data-about="Ягодный куст">
-                <img src="img/plants/berries.png" alt="berries" data-width="50" data-height="50">
+                <img src="img/plants/berries.png" alt="berries" data-width="50" data-height="50" data-square-type = 'c'>
                 <span class="ticket">ягодный&nbsp;куст</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Живая изгородь">
-                <img class="contain" src="img/plants/hedge.png" alt="hedge" data-width="50" data-height="20">
+                <img class="contain" src="img/plants/hedge.png" alt="hedge" data-width="50" data-height="20" data-square-type = 'r'>
                 <span class="ticket">живая изгородь</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Клумба">
-                <img class="contain" src="img/plants/flowers.png" alt="flowers" data-width="50" data-height="50">
+                <img class="contain" src="img/plants/flowers.png" alt="flowers" data-width="50" data-height="50" data-square-type = 'c'>
                 <span class="ticket">клумба</span>
               </div>
             </li>
@@ -172,25 +202,25 @@
             </li>
             <li class="sub-menu-row footpath">
               <div class="sub-menu-item main-content" data-about="Дорожка из брусчатки">
-                <img src="img/footpath/cobblestone.png" alt="cobblestone" data-width="50" data-height="50">
+                <img src="img/footpath/cobblestone.png" alt="cobblestone" data-width="50" data-height="50" data-square-type = 'r'>
                 <span class="ticket">брусчатка</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Дорожка из дерева">
-                <img src="img/footpath/planks.png" alt="planks" data-width="50" data-height="50">
+                <img src="img/footpath/planks.png" alt="planks" data-width="50" data-height="50" data-square-type = 'r'>
                 <span class="ticket">дерево</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Дорожка из камня">
-                <img src="img/footpath/stone.png" alt="stone" data-width="50" data-height="50">
+                <img src="img/footpath/stone.png" alt="stone" data-width="50" data-height="50" data-square-type = 'r'>
                 <span class="ticket">камень</span>
               </div>
             </li>
             <li class="sub-menu-row footpath">
               <div class="sub-menu-item main-content" data-about="Дорожка из плитки">
-                <img src="img/footpath/tiles.png" alt="tiles" data-width="50" data-height="50">
+                <img src="img/footpath/tiles.png" alt="tiles" data-width="50" data-height="50" data-square-type = 'r'>
                 <span class="ticket">плитка</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Дорожка из асфальта">
-                <img src="img/footpath/asphalt.png" alt="asphalt" data-width="50" data-height="50">
+                <img src="img/footpath/asphalt.png" alt="asphalt" data-width="50" data-height="50" data-square-type = 'r'>
                 <span class="ticket">асфальт</span>
               </div>
             </li>
@@ -204,25 +234,25 @@
             </li>
             <li class="sub-menu-row any">
               <div class="sub-menu-item main-content" data-about="Бассейн">
-                <img  src="img/any/poolrectangle.png" alt="poolrectangle" data-width="100" data-height="60">
+                <img class="contain" src="img/any/poolrectangle.png" alt="poolrectangle" data-width="100" data-height="60" data-square-type = 'r'>
                 <span class="ticket">бассейн</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Круглый бассейн">
-                <img src="img/any/poolround.png" alt="poolround" data-width="100" data-height="100">
+                <img src="img/any/poolround.png" alt="poolround" data-width="100" data-height="100" data-square-type = 'c'>
                 <span class="ticket">круглый бассейн</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Автомобиль">
-                <img class="contain" src="img/any/auto.png" alt="auto" data-width="25" data-height="50">
+                <img class="contain" src="img/any/auto.png" alt="auto" data-width="25" data-height="50" data-square-type = 'r'>
                 <span class="ticket">автомобиль</span>
               </div>
             </li>
             <li class="sub-menu-row any">
               <div class="sub-menu-item main-content" data-about="Внедорожник">
-                <img class="contain" src="img/any/gray-auto.png" alt="gray-auto" data-width="25" data-height="50">
+                <img class="contain" src="img/any/gray-auto.png" alt="gray-auto" data-width="25" data-height="50" data-square-type = 'r'>
                 <span class="ticket">внедорожник</span>
               </div>
               <div class="sub-menu-item main-content" data-about="Мусорный бак">
-                <img src="img/any/trash.png" alt="trash" data-width="30" data-height="30">
+                <img src="img/any/trash.png" alt="trash" data-width="30" data-height="30" data-square-type = 'r'>
                 <span class="ticket">мусорный бак</span>
               </div>
             </li>
