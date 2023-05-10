@@ -235,14 +235,6 @@ const actionSetter = {
     })
   },
   downloadPlan: () => {
-//     function download(url,name){
-// // make the link. set the href and download. emulate dom click
-//       $('<a>').attr({href:url,download:name})[0].click();
-//     }
-//     function downloadFabric(canvas,name){
-// //  convert the canvas to a data url and download it.
-//       download(canvas.toDataURL(),name+'.png');
-//     }
     let btn = document.getElementById('btn');
     btn.addEventListener('click', () => {
       btn.firstElementChild.setAttribute('href', canvas.toDataURL());
@@ -304,7 +296,11 @@ const functions = {
       explorerInfoRow.addEventListener('click', () => {
         let line = new fabric.Line(element.getCoords(),{
           strokeWidth: 5,
-          stroke: '#f59421'
+          stroke: '#f59421',
+          selectable: false,
+          hasBorders: false,
+          hasControls: false,
+          evented: false
         });
         canvas.add(line);
         setTimeout(() => {
