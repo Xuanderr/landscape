@@ -323,7 +323,11 @@ const functions = {
     explorerInfoRowLength.addEventListener('click', () => {
       let line = new fabric.Line(linesArray[0].getCoords(), {
         strokeWidth: 5,
-        stroke: '#f59421'
+        stroke: '#f59421',
+        selectable: false,
+        hasBorders: false,
+        hasControls: false,
+        evented: false
       });
       canvas.add(line);
       setTimeout(() => {
@@ -344,7 +348,11 @@ const functions = {
     explorerInfoRowWidth.addEventListener('click', () => {
       let line = new fabric.Line(linesArray[1].getCoords(), {
         strokeWidth: 5,
-        stroke: '#f59421'
+        stroke: '#f59421',
+        selectable: false,
+        hasBorders: false,
+        hasControls: false,
+        evented: false
       });
       canvas.add(line);
       setTimeout(() => {
